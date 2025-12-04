@@ -1,0 +1,28 @@
+:root {
+  --bg-gradient: linear-gradient(160deg, #1b1740 0%, #0c3c47 100%);
+  --glass-bg: rgba(255, 255, 255, 0.14);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  --accent-primary: #5bf2d6;
+  --accent-secondary: #a96dff;
+  --error-color: #ff4f6d;
+  --radius-lg: 28px;
+  --radius-xl: 32px;
+  --transition-fast: 150ms ease-out;
+}
+
+/* Could use media queries
+
+@media (min-width: 768px) {
+  .mobile-screen {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .desktop-screen {
+    display: none;
+  }
+}
+
+*/
