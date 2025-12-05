@@ -24,6 +24,28 @@ To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the fo
 
 You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
 
+## Error Tracking with Sentry
+
+### Recommended: Sentry Cloud (Free Tier)
+
+- 5,000 errors/month free
+- No local setup required
+- Production-ready
+
+### Setup
+
+1. Create account at [sentry.io](https://sentry.io)
+2. Create new Next.js project
+3. Install SDK:
+
+```bash
+npx @sentry/wizard@latest -i nextjs
+```
+
+### Self-hosted Alternative
+
+Sentry self-hosted requires 16GB+ RAM. For development, the cloud free tier is more practical.
+
 ## How do I deploy this?
 
 Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
