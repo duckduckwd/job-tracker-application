@@ -26,3 +26,51 @@
 }
 
 */
+
+/* CSS Blob Background shapes */
+.app-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(160deg, #1b1740 0%, #0c3c47 100%);
+  z-index: -2;
+}
+
+/* Container for blobs */
+.app-bg-blobs {
+  position: absolute;
+  inset: -10%;
+  filter: blur(40px);
+  opacity: 0.8;
+}
+
+/* Individual blobs */
+.app-bg-blob {
+  position: absolute;
+  width: 360px;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, #5bf2d6, #1b1740);
+}
+
+.app-bg-blob--purple {
+  background: radial-gradient(circle at 30% 30%, #a96dff, #1b1740);
+}
+
+.app-bg-blob--pink {
+  background: radial-gradient(circle at 30% 30%, #ff6fb5, #1b1740);
+}
+
+/* Example placements */
+.app-bg-blob:nth-child(1) {
+  top: -8%;
+  left: -4%;
+}
+.app-bg-blob:nth-child(2) {
+  top: 40%;
+  right: -6%;
+}
+.app-bg-blob:nth-child(3) {
+  bottom: -10%;
+  left: 30%;
+}
