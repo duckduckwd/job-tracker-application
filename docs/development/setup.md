@@ -86,11 +86,20 @@ Expected response:
 ### Run Tests
 
 ```bash
-# Run all tests
+# Run unit tests
 npm test
 
 # Run tests in watch mode
 npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run E2E tests
+npm run test:e2e
+
+# Run E2E tests with UI
+npm run test:e2e:ui
 
 # Run linting
 npm run lint
@@ -112,16 +121,41 @@ Pre-commit hooks automatically run:
 ### Available Scripts
 
 ```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run start        # Start production server
-npm run lint         # Run ESLint
-npm run lint:fix     # Fix ESLint issues
-npm run test         # Run tests
-npm run test:watch   # Run tests in watch mode
-npm run typecheck    # Run TypeScript checks
-npm run db:push      # Push schema to database
-npm run db:studio    # Open Prisma Studio
+npm run dev              # Start development server
+npm run build            # Build for production
+npm run start            # Start production server
+npm run lint             # Run ESLint
+npm run lint:fix         # Fix ESLint issues
+npm run test             # Run unit tests
+npm run test:watch       # Run tests in watch mode
+npm run test:coverage    # Run tests with coverage
+npm run test:e2e         # Run E2E tests
+npm run test:e2e:ui      # Run E2E tests with UI
+npm run typecheck        # Run TypeScript checks
+npm run db:push          # Push schema to database
+npm run db:studio        # Open Prisma Studio
+```
+
+## Testing
+
+### Unit Tests (Jest)
+
+- Located in `__tests__/` directories or `.test.ts` files
+- Coverage reports generated in `coverage/` directory
+- Minimum 80% coverage threshold enforced
+
+### E2E Tests (Playwright)
+
+- Located in `e2e/` directory
+- Tests run against local development server
+- Supports multiple browsers (Chrome, Firefox, Safari)
+
+```bash
+# Install Playwright browsers (first time only)
+npm run playwright:install
+
+# Run E2E tests
+npm run test:e2e
 ```
 
 ## IDE Configuration

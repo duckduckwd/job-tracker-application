@@ -209,9 +209,11 @@ Brief description of the changes made and why.
 ## Testing
 
 - [ ] Unit tests added/updated
-- [ ] Integration tests added/updated
+- [ ] E2E tests added/updated (if applicable)
+- [ ] Test coverage maintained (80%+ threshold)
 - [ ] Manual testing completed
 - [ ] All existing tests pass
+- [ ] Performance impact tested
 
 ## Screenshots (if applicable)
 
@@ -224,7 +226,9 @@ Include screenshots for UI changes.
 - [ ] Code is properly commented
 - [ ] Documentation updated
 - [ ] No new warnings introduced
-- [ ] Tests pass locally
+- [ ] Unit tests pass locally (`npm run test:coverage`)
+- [ ] E2E tests pass locally (`npm run test:e2e`)
+- [ ] Pre-push hooks pass
 ```
 
 #### Review Guidelines
@@ -385,7 +389,7 @@ npm run lint
 # Run type checking
 npm run typecheck
 
-# Run tests
+# Run unit tests
 npm run test
 
 # Check for secrets
@@ -430,8 +434,13 @@ npm run typecheck || exit 1
 # Run linting
 npm run lint || exit 1
 
-# Run tests (allow no tests)
-npm run test || true
+# Run unit tests with coverage
+npm run test:coverage || exit 1
+
+# Run E2E tests (if available)
+if [ -d "e2e" ]; then
+  npm run test:e2e || exit 1
+fi
 
 # Note: Build step removed - requires database connection
 # CI/CD will handle build validation with proper environment
@@ -454,9 +463,10 @@ Before every push, the following checks run automatically:
 
 ```bash
 # Automated pre-push hook runs:
-npm run typecheck  # TypeScript validation
-npm run lint       # Code quality checks
-npm run test       # Unit tests (allows no tests)
+npm run typecheck     # TypeScript validation
+npm run lint          # Code quality checks
+npm run test:coverage # Unit tests with coverage (80% threshold)
+npm run test:e2e      # E2E tests (if e2e directory exists)
 # Build validation handled by CI/CD with proper environment
 ```
 

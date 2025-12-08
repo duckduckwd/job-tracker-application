@@ -47,6 +47,7 @@
     "jest.env.js",
     "commitlint.config.js",
     "next.config.js",
+    "playwright.config.js",
     "postcss.config.js",
     "prettier.config.js",
     ".next",
