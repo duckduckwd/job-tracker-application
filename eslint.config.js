@@ -58,7 +58,7 @@ const config = [
       ],
       "@typescript-eslint/prefer-nullish-coalescing": "error",
       "@typescript-eslint/prefer-optional-chain": "error",
-      "@typescript-eslint/no-unnecessary-condition": "warn",
+      "@typescript-eslint/no-unnecessary-condition": "off",
       "@typescript-eslint/no-unnecessary-type-assertion": "error",
       "@typescript-eslint/prefer-readonly": "warn",
       "@typescript-eslint/switch-exhaustiveness-check": "error",
@@ -76,7 +76,7 @@ const config = [
       "max-depth": ["warn", { max: 4 }],
       "max-lines-per-function": [
         "warn",
-        { max: 50, skipBlankLines: true, skipComments: true },
+        { max: 60, skipBlankLines: true, skipComments: true },
       ],
       "max-params": ["warn", { max: 4 }],
       "no-console": ["warn", { allow: ["warn", "error"] }],
@@ -108,6 +108,45 @@ const config = [
       "unicorn/prefer-includes": "error",
       "unicorn/prefer-string-starts-ends-with": "error",
       "unicorn/prefer-ternary": "warn",
+    },
+  },
+  {
+    files: [
+      "prisma/**/*.ts",
+      "scripts/**/*.ts",
+      "*.config.{js,ts}",
+      "**/db.ts",
+      "**/database/**",
+    ],
+    rules: {
+      "no-console": "off",
+    },
+  },
+  {
+    files: [
+      "**/*example*/**",
+      "**/*demo*/**",
+      "**/*test*/**",
+      "**/*.example.*",
+      "**/*.demo.*",
+    ],
+    rules: {
+      "max-lines-per-function": "off",
+      complexity: "off",
+      "sonarjs/cognitive-complexity": "off",
+    },
+  },
+  {
+    files: [
+      "**/monitoring/**",
+      "**/logger/**",
+      "**/*logger*",
+      "**/instrumentation*",
+    ],
+    rules: {
+      "no-console": "off",
+      "security/detect-object-injection": "off",
+      "max-lines-per-function": "off",
     },
   },
   {

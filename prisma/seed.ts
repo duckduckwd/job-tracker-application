@@ -6,15 +6,15 @@ async function main() {
   try {
     // Add your seed data here
     console.log("Seeding database...");
-  } catch (e: unknown) {
-    console.error(e);
-    throw e;
+  } catch (error: unknown) {
+    console.error(error);
+    throw error;
   } finally {
     await prisma.$disconnect();
   }
 }
 
-main().catch((e: unknown) => {
-  console.error(e);
+main().catch((error: unknown) => {
+  console.error(error);
   process.exit(1);
 });

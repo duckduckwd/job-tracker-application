@@ -10,7 +10,7 @@ export interface PerformanceMetric {
 }
 
 export class PerformanceMonitor {
-  private static timers = new Map<string, number>();
+  private static readonly timers = new Map<string, number>();
 
   // Start timing an operation
   static startTimer(operationName: string): string {
