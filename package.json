@@ -35,6 +35,7 @@
     "git:clean": "git branch --merged main | grep -v main | xargs -n 1 git branch -d 2>/dev/null || true",
     "git:prune": "git remote prune origin && git gc --prune=now",
     "analyze": "ANALYZE=true npm run build",
+    "bundle:check": "npm run build && node scripts/check-bundle-size.js",
     "pre-push": "npm run typecheck && npm run lint && npm run test && npm run build",
     "audit": "npm audit --audit-level=moderate",
     "audit:fix": "npm audit fix",

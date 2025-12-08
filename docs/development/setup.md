@@ -104,6 +104,9 @@ npm run test:e2e:ui
 # Run performance audit
 npm run perf:audit
 
+# Check bundle sizes
+npm run bundle:check
+
 # Check for unused code
 npm run unused:check
 
@@ -157,6 +160,8 @@ npm run unused:check         # Check for unused code
 npm run deadcode:check       # Find unused files
 npm run deadcode:dependencies # Find unused dependencies
 npm run quality:check        # Run all quality checks
+npm run bundle:check         # Check bundle sizes
+npm run analyze              # Analyze bundle composition
 npm run typecheck            # Run TypeScript checks
 npm run db:push          # Push schema to database
 npm run db:studio        # Open Prisma Studio
@@ -193,6 +198,26 @@ npm run test:e2e
 ```bash
 # Run performance audit locally
 npm run perf:audit
+```
+
+### Performance Budgets
+
+- Webpack bundle size limits enforced during build
+- Automatic warnings when bundles exceed thresholds
+- Bundle composition analysis with @next/bundle-analyzer
+
+**Bundle Size Limits:**
+
+- Main app bundle: 400KB
+- Page bundles: 250KB
+- Chunk bundles: 200KB
+
+```bash
+# Check bundle sizes against limits
+npm run bundle:check
+
+# Analyze bundle composition
+npm run analyze
 ```
 
 ### Code Quality Tools

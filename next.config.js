@@ -13,6 +13,17 @@ const withBundleAnalyzer = bundleAnalyzer({
 /** @type {import("next").NextConfig} */
 const config = {
   output: "standalone",
+  webpack: (config, { isServer }) => {
+    // Performance budgets
+    if (!isServer) {
+      config.performance = {
+        maxAssetSize: 250000, // 250KB
+        maxEntrypointSize: 400000, // 400KB
+        hints: "warning",
+      };
+    }
+    return config;
+  },
   async headers() {
     const securityHeaders = [
       {
