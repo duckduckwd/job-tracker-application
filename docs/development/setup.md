@@ -113,8 +113,11 @@ npm run deadcode:check
 # Check for unused dependencies
 npm run deadcode:dependencies
 
-# Run linting (includes import sorting, complexity, security & modern practices)
+# Run comprehensive linting (45+ rules across 6 plugins)
 npm run lint
+
+# Fix auto-fixable issues (import sorting, formatting, etc.)
+npm run lint:fix
 
 # Run all quality checks at once
 npm run quality:check
@@ -212,12 +215,49 @@ npm run unused:check
 npm run unused:check:json
 ```
 
-#### Complexity Analysis
+#### Comprehensive Code Quality Analysis
 
-- **Built-in ESLint**: Cyclomatic complexity (>10), nesting depth (4 levels), function length (50 lines), parameters (4 max)
-- **SonarJS**: Cognitive complexity (>15), duplicate strings, identical functions, redundant booleans
-- **Unicorn**: Modern JavaScript practices, better regex patterns, consistent destructuring
-- **Security**: Detects potential vulnerabilities, unsafe patterns, and security anti-patterns
+**Built-in ESLint Rules:**
+
+- Cyclomatic complexity (>10), nesting depth (4 levels), function length (60 lines), parameters (4 max)
+- Modern JavaScript: prefer-const, no-var, object-shorthand, prefer-template
+- Performance: no-await-in-loop, require-atomic-updates
+- Development: no-console (warn/error allowed), no-debugger, no-alert
+
+**TypeScript-ESLint Rules:**
+
+- Type safety: prefer-nullish-coalescing, prefer-optional-chain, switch-exhaustiveness-check
+- Code quality: no-explicit-any, no-non-null-assertion, prefer-as-const
+- Import management: consistent-type-imports with inline style
+
+**Import Management (simple-import-sort + import):**
+
+- Automatic import sorting (Node modules → Internal → Relative)
+- Duplicate import detection, newline enforcement
+- Anonymous default export warnings
+
+**SonarJS Rules:**
+
+- Cognitive complexity (>15), duplicate strings (3+ threshold)
+- Identical function detection, redundant boolean elimination
+- Immediate return preferences
+
+**Unicorn Rules:**
+
+- Modern JavaScript practices: better regex patterns, consistent destructuring
+- Array method preferences: prefer includes, startsWith/endsWith
+- Loop modernization: no-for-loop, no-array-for-each
+
+**Security Rules:**
+
+- Vulnerability detection: unsafe regex, object injection, eval usage
+- Timing attack prevention, pseudo-random byte detection
+- Buffer safety, child process warnings, CSRF protection
+
+**React/Next.js Rules:**
+
+- jsx-no-target-blank for security, no-danger warnings
+- react-hooks/exhaustive-deps for proper hook dependencies
 
 #### Dead Code Elimination
 
