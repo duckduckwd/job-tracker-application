@@ -17,27 +17,36 @@ export const env = createEnv({
             .min(8, "AUTH_SECRET must be at least 8 characters")
             .optional(),
 
-    AUTH_DISCORD_ID: z
-      .string()
-      .refine(
-        (val) => val !== "placeholder" && val !== "test-discord-id",
-        "AUTH_DISCORD_ID cannot be placeholder value",
-      ),
+    AUTH_DISCORD_ID:
+      process.env.NODE_ENV === "production"
+        ? z
+            .string()
+            .refine(
+              (val) => val !== "placeholder" && val !== "test-discord-id",
+              "AUTH_DISCORD_ID cannot be placeholder value",
+            )
+        : z.string().optional(),
 
-    AUTH_DISCORD_SECRET: z
-      .string()
-      .refine(
-        (val) => val !== "placeholder" && val !== "test-discord-secret",
-        "AUTH_DISCORD_SECRET cannot be placeholder value",
-      ),
+    AUTH_DISCORD_SECRET:
+      process.env.NODE_ENV === "production"
+        ? z
+            .string()
+            .refine(
+              (val) => val !== "placeholder" && val !== "test-discord-secret",
+              "AUTH_DISCORD_SECRET cannot be placeholder value",
+            )
+        : z.string().optional(),
 
-    DATABASE_URL: z
-      .string()
-      .url()
-      .refine(
-        (val) => !val.includes("password@"),
-        "DATABASE_URL should not contain weak passwords",
-      ),
+    DATABASE_URL:
+      process.env.NODE_ENV === "production"
+        ? z
+            .string()
+            .url()
+            .refine(
+              (val) => !val.includes("password@"),
+              "DATABASE_URL should not contain weak passwords",
+            )
+        : z.string().url(),
 
     // Add Sentry validation
     SENTRY_DSN: z.string().url().optional(),
