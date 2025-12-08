@@ -34,7 +34,7 @@ Need robust development tooling to maintain code quality, prevent bugs, and ensu
 
 - Pre-commit hooks run linting, formatting, and type checking
 - Test environment configured with proper mocks
-- ESLint rules optimized for Next.js and TypeScript
+- ESLint rules optimised for Next.js and TypeScript
 - Environment variables validated at startup
 
 ## Consequences

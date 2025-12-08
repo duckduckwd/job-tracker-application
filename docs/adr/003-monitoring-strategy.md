@@ -10,7 +10,7 @@ Accepted
 
 ## Context
 
-Need comprehensive monitoring for debugging, performance optimization, and operational awareness.
+Need comprehensive monitoring for debugging, performance optimisation, and operational awareness.
 
 ## Decision
 
@@ -36,7 +36,7 @@ Multi-layered monitoring approach:
 - PerformanceMonitor for timing operations
 - /api/health endpoint for system status
 - Middleware for request correlation
-- Optimized Sentry usage (sampling) for free tier
+- Optimised Sentry usage (sampling) for free tier
 
 ## Consequences
 
@@ -44,7 +44,7 @@ Multi-layered monitoring approach:
 
 - Full observability into application behaviour
 - Quick issue identification and resolution
-- Performance optimization insights
+- Performance optimisation insights
 - Production-ready monitoring
 
 **Negative:**

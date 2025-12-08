@@ -1,0 +1,313 @@
+# Database Setup Guide
+
+## Overview
+
+This application uses PostgreSQL with Prisma ORM for type-safe database operations.
+
+## Local Development Setup
+
+### Option 1: Docker (Recommended)
+
+```bash
+# Start PostgreSQL container
+docker-compose up -d
+
+# Check container status
+docker ps
+
+# View logs
+docker-compose logs db
+```
+
+### Option 2: Local PostgreSQL Installation
+
+```bash
+# macOS with Homebrew
+brew install postgresql
+brew services start postgresql
+
+# Create database
+createdb job-application-tracker
+
+# Create user (optional)
+createuser -s postgres
+```
+
+## Database Configuration
+
+### Connection String Format
+
+```bash
+DATABASE_URL="postgresql://[user]:[password]@[host]:[port]/[database]?[options]"
+```
+
+### Local Development
+
+```bash
+DATABASE_URL="postgresql://postgres:password@localhost:5432/job-application-tracker"
+```
+
+### Production Examples
+
+```bash
+# Supabase
+DATABASE_URL="postgresql://postgres:[password]@[host]:5432/postgres?sslmode=require"
+
+# Railway
+DATABASE_URL="postgresql://postgres:[password]@[host]:5432/railway?sslmode=require"
+
+# Neon
+DATABASE_URL="postgresql://[user]:[password]@[host]/[database]?sslmode=require"
+```
+
+## Prisma Commands
+
+### Schema Management
+
+```bash
+# Generate Prisma client
+npm run db:generate
+
+# Push schema to database (development)
+npm run db:push
+
+# Create and apply migration
+npm run db:migrate
+
+# Deploy migrations (production)
+npm run db:deploy
+```
+
+### Database Inspection
+
+```bash
+# Open Prisma Studio (database GUI)
+npm run db:studio
+
+# View database schema
+npx prisma db pull
+
+# Reset database (development only)
+npx prisma db reset
+```
+
+## Schema Overview
+
+### Current Tables
+
+- **User** - NextAuth.js user accounts
+- **Account** - OAuth account connections
+- **Session** - User sessions
+- **VerificationToken** - Email verification tokens
+
+### Future Tables (Job Tracking)
+
+- **JobApplication** - Job applications with status tracking
+- **Contact** - Company contacts and recruiters
+- **Interview** - Interview scheduling and notes
+
+## Database Migrations
+
+### Development Workflow
+
+```bash
+# 1. Modify schema in prisma/schema.prisma
+# 2. Push changes to development database
+npm run db:push
+
+# 3. When ready, create migration
+npx prisma migrate dev --name add-job-applications
+
+# 4. Migration files created in prisma/migrations/
+```
+
+### Production Deployment
+
+```bash
+# Apply migrations to production
+npm run db:migrate
+
+# Or use Prisma deploy command
+npx prisma migrate deploy
+```
+
+## Connection Pooling
+
+### Development
+
+No pooling needed for local development.
+
+### Production
+
+Configure connection limits in DATABASE_URL:
+
+```bash
+DATABASE_URL="postgresql://user:pass@host:5432/db?connection_limit=10&pool_timeout=10"
+```
+
+## Backup and Restore
+
+### Local Backup
+
+```bash
+# Backup database
+pg_dump job-application-tracker > backup.sql
+
+# Restore database
+psql job-application-tracker < backup.sql
+```
+
+### Production Backup
+
+Use your hosting provider's backup tools:
+
+- **Supabase**: Automatic backups in dashboard
+- **Railway**: Database backups in project settings
+- **Neon**: Point-in-time recovery available
+
+## Performance Optimisation
+
+### Indexing
+
+Key indexes are defined in schema:
+
+```prisma
+model JobApplication {
+  id     String @id @default(cuid())
+  userId String
+
+  @@index([userId])
+  @@index([status])
+  @@index([appliedDate])
+}
+```
+
+### Query Optimisation
+
+```typescript
+// Use select to limit fields
+const jobs = await db.jobApplication.findMany({
+  select: {
+    id: true,
+    company: true,
+    position: true,
+    status: true,
+  },
+});
+
+// Use include for relations
+const jobWithContacts = await db.jobApplication.findUnique({
+  where: { id },
+  include: {
+    contacts: true,
+    interviews: true,
+  },
+});
+```
+
+## Troubleshooting
+
+### Connection Issues
+
+```bash
+# Check if PostgreSQL is running
+docker ps  # For Docker
+brew services list | grep postgresql  # For Homebrew
+
+# Test connection
+psql "postgresql://postgres:password@localhost:5432/job-application-tracker"
+```
+
+### Migration Errors
+
+```bash
+# Reset migrations (development only)
+npx prisma migrate reset
+
+# Force push schema (development only)
+npx prisma db push --force-reset
+
+# Check migration status
+npx prisma migrate status
+```
+
+### Schema Sync Issues
+
+```bash
+# Pull current database schema
+npx prisma db pull
+
+# Generate new client
+npx prisma generate
+
+# Restart development server
+npm run dev
+```
+
+### Permission Errors
+
+```bash
+# Grant permissions to user
+GRANT ALL PRIVILEGES ON DATABASE "job-application-tracker" TO postgres;
+
+# Or create superuser
+CREATE USER postgres WITH SUPERUSER PASSWORD 'password';
+```
+
+## Security Considerations
+
+### Development
+
+- Use strong passwords even locally
+- Don't expose database ports publicly
+- Regular backups of development data
+
+### Production
+
+- Enable SSL connections (`sslmode=require`)
+- Use connection pooling
+- Regular security updates
+- Monitor for unusual query patterns
+- Implement proper access controls
+
+## Monitoring
+
+### Query Logging
+
+Enable in production for performance monitoring:
+
+```typescript
+const db = new PrismaClient({
+  log: ["query", "error", "warn"],
+});
+```
+
+### Performance Metrics
+
+Monitor these metrics:
+
+- Connection pool usage
+- Query execution time
+- Database size growth
+- Index usage statistics
+
+## Environment-Specific Setup
+
+### Development
+
+- Local PostgreSQL or Docker
+- Full query logging enabled
+- Prisma Studio for debugging
+
+### Staging
+
+- Separate database instance
+- Production-like configuration
+- Migration testing environment
+
+### Production
+
+- Managed database service
+- Connection pooling enabled
+- Automated backups configured
+- Monitoring and alerting setup
