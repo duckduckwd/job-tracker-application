@@ -3,8 +3,8 @@ import "~/styles/globals.css";
 import { type Metadata } from "next";
 import { Geist } from "next/font/google";
 
-import { AnalyticsProvider } from "~/components/AnalyticsProvider";
-import { ErrorBoundary } from "~/components/ErrorBoundary";
+import { ErrorBoundary } from "~/components/error-boundaries/ErrorBoundary";
+import { AnalyticsProvider } from "~/components/providers/AnalyticsProvider";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
