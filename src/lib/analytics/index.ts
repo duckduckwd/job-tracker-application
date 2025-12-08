@@ -1,18 +1,4 @@
-interface AnalyticsEvent {
-  name: string;
-  properties?: Record<string, unknown>;
-  userId?: string;
-}
-
-declare global {
-  interface Window {
-    va?: (
-      action: string,
-      name: string,
-      properties?: Record<string, unknown>,
-    ) => void;
-  }
-}
+import type { AnalyticsEvent } from "~/types";
 
 class Analytics {
   private readonly isEnabled: boolean;

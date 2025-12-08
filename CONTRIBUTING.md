@@ -85,7 +85,16 @@ chore(deps): update dependencies to latest versions
 
 ### TypeScript Guidelines
 
+**Type Definitions**: All shared types are centralized in `~/types/index.ts`. See [Coding Standards - Type Definitions](./docs/development/coding-standards.md#centralized-type-definitions) for details.
+
+**Constants Management**: All shared constants are centralized in `~/constants/index.ts`. See [Coding Standards - Constants](./docs/development/coding-standards.md#centralized-constants) for details.
+
+**Enterprise Architecture**: Project follows enterprise patterns with organized directory structure. See [Coding Standards - Enterprise Architecture](./docs/development/coding-standards.md#enterprise-architecture-patterns) for details.
+
 ```typescript
+// ✅ Good: Use centralized types
+import type { JobApplication } from "~/types";
+
 // ✅ Good: Use explicit types
 interface JobApplication {
   id: string;
@@ -218,8 +227,20 @@ npm test
 # Run tests in watch mode
 npm run test:watch
 
-# Run tests with coverage
+# Run tests with coverage (80% threshold enforced)
 npm run test:coverage
+
+# Run E2E tests
+npm run test:e2e
+
+# Run E2E tests with UI
+npm run test:e2e:ui
+
+# Run performance tests
+npm run perf:audit
+
+# Run all quality checks
+npm run quality:check
 
 # Run specific test file
 npm test -- JobService.test.ts
@@ -229,10 +250,13 @@ npm test -- JobService.test.ts
 
 ### Before Submitting
 
-1. **Run tests**: Ensure all tests pass
-2. **Run linting**: Fix all ESLint and Prettier issues
-3. **Update documentation**: Update relevant documentation
-4. **Test manually**: Verify your changes work as expected
+1. **Run comprehensive checks**: `npm run quality:check`
+2. **Run tests**: Ensure all tests pass with coverage
+3. **Run linting**: Fix all ESLint issues (45+ rules enforced)
+4. **Check bundle size**: `npm run bundle:check`
+5. **Check for unused code**: `npm run unused:check`
+6. **Update documentation**: Update relevant documentation
+7. **Test manually**: Verify your changes work as expected
 
 ### Pull Request Template
 
@@ -266,6 +290,12 @@ Brief description of the changes made.
 ### Review Process
 
 1. **Automated checks**: All CI checks must pass
+   - TypeScript compilation
+   - ESLint (45+ rules across 6 plugins)
+   - Unit tests with 80% coverage
+   - E2E tests with Playwright
+   - Performance budgets (Lighthouse CI)
+   - Bundle size limits
 2. **Code review**: At least one approval required
 3. **Testing**: Reviewer should test the changes
 4. **Documentation**: Verify documentation is updated
@@ -410,11 +440,14 @@ async function createJobApplication(
 ### Testing Accessibility
 
 ```bash
-# Run accessibility tests
-npm run test:a11y
+# Accessibility is enforced through ESLint jsx-a11y rules
+npm run lint
 
-# Use accessibility linting
-npm run lint:a11y
+# E2E tests include accessibility checks
+npm run test:e2e
+
+# Performance tests include accessibility scoring
+npm run perf:audit
 ```
 
 ## Release Process
@@ -439,8 +472,13 @@ npm run lint:a11y
 ### Resources
 
 - [Development Setup Guide](./docs/development/setup.md)
+- [Git Workflow Guide](./docs/development/git-workflow.md)
+- [CI/CD Pipeline Documentation](./docs/deployment/ci-cd.md)
+- [Performance Monitoring](./docs/monitoring/performance.md)
+- [Error Handling Guide](./docs/monitoring/error-handling.md)
 - [API Documentation](./docs/api/README.md)
 - [Architecture Documentation](./docs/adr/)
+- [Deployment Guide](./docs/deployment/vercel.md)
 
 ### Communication
 

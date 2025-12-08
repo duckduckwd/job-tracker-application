@@ -6,6 +6,207 @@ This document defines the coding standards and best practices for the Job Applic
 
 ## TypeScript Standards
 
+### Domain-Specific Type Organization
+
+TypeScript interfaces and types are organized into domain-specific files within `~/types/` to improve maintainability and prevent bloat.
+
+#### Structure
+
+```
+types/
+├── analytics.ts      # Analytics events and window extensions
+├── components.ts     # React component props and state types
+├── monitoring.ts     # Logging and performance types
+├── security.ts       # Security event types
+└── index.ts          # Re-exports all types
+```
+
+#### Rules
+
+**✅ DO:**
+
+- Add domain-specific types to their respective files
+- Import types using `import type { TypeName } from "~/types"`
+- Create new domain files as features are added (e.g., `job-application.ts`, `company.ts`)
+- Use descriptive names that indicate purpose
+- Re-export through `~/types/index.ts` for backward compatibility
+
+**❌ DON'T:**
+
+- Define interfaces inline when they could be reused
+- Duplicate type definitions across files
+- Put all types in a single index file
+- Use generic names like `Props` or `Data`
+
+#### Examples
+
+```typescript
+// ✅ Good: Domain-specific imports
+import type { AnalyticsEvent } from "~/types/analytics";
+import type { ErrorBoundaryProps } from "~/types/components";
+
+// ✅ Good: Centralized import (re-exported)
+import type { AnalyticsEvent, ErrorBoundaryProps } from "~/types";
+
+// ❌ Bad: Inline duplication
+interface AnalyticsEvent {
+  name: string;
+  // ...
+}
+```
+
+#### Current Domain Files
+
+- **analytics.ts**: Event tracking types and window extensions
+- **components.ts**: React component prop/state interfaces
+- **monitoring.ts**: Logging and performance types
+- **security.ts**: Security event types
+
+#### Future Domain Files
+
+As features are added, create additional domain files:
+
+- **job-application.ts**: Job application entities and related types
+- **company.ts**: Company information types
+- **contact.ts**: Contact and networking types
+- **user.ts**: User profile and settings types
+
+### Centralized Constants
+
+All shared constants and configuration values are centralized in `~/constants/index.ts` to eliminate magic numbers and improve maintainability.
+
+#### Rules
+
+**✅ DO:**
+
+- Add shared runtime constants to `~/constants/index.ts`
+- Use `as const` for type safety
+- Group related constants with comments
+- Import using `import { CONSTANT_NAME } from "~/constants"`
+
+**❌ DON'T:**
+
+- Use magic numbers in business logic
+- Duplicate constant values across files
+- Move build/config file constants to src (keep them local)
+
+#### Examples
+
+```typescript
+// ✅ Good: Centralized constants
+import { RATE_LIMIT, HTTP_STATUS } from "~/constants";
+
+if (requests > RATE_LIMIT.MAX_REQUESTS) {
+  return new Response("Too Many Requests", {
+    status: HTTP_STATUS.TOO_MANY_REQUESTS,
+  });
+}
+
+// ❌ Bad: Magic numbers
+if (requests > 100) {
+  return new Response("Too Many Requests", { status: 429 });
+}
+```
+
+#### Current Categories
+
+- **Rate Limiting**: Window duration, request limits
+- **Performance**: Monitoring thresholds and sample rates
+- **Session**: Authentication timing configuration
+- **HTTP Status**: Common status codes
+- **Auth Routes**: Authentication page paths
+
+## Enterprise Architecture Patterns
+
+### Directory Structure
+
+The project follows enterprise-grade organization patterns:
+
+```
+src/
+├── api/           # API client abstractions
+├── components/    # Shared UI components (organized by purpose)
+│   ├── error-boundaries/  # Error handling components
+│   ├── providers/         # Context providers
+│   ├── ui/                # Reusable UI primitives
+│   ├── forms/             # Form components
+│   ├── layout/            # Layout components
+│   ├── charts/            # Data visualization
+│   └── demo/              # Development demo components
+├── config/        # Environment-specific configurations
+├── constants/     # Centralized constants
+├── features/      # Feature-based modules
+├── hooks/         # Custom React hooks
+├── lib/           # Third-party integrations
+├── schemas/       # Zod validation schemas
+├── services/      # Business logic layer
+├── types/         # TypeScript definitions (organized by domain)
+│   ├── analytics.ts
+│   ├── components.ts
+│   ├── monitoring.ts
+│   ├── security.ts
+│   └── index.ts       # Re-exports all types
+└── utils/         # Utility functions
+```
+
+### Utility Functions (`~/utils`)
+
+Centralized helper functions for common operations:
+
+```typescript
+// ✅ Good: Use utility functions
+import { cn, formatDate, isValidEmail } from "~/utils";
+
+const className = cn("base-class", isActive && "active-class");
+const displayDate = formatDate(application.createdAt);
+const isValid = isValidEmail(user.email);
+```
+
+### Service Layer (`~/services`)
+
+Business logic abstracted from components:
+
+```typescript
+// ✅ Good: Service layer pattern
+import { jobApplicationService } from "~/services";
+
+const applications = await jobApplicationService.getAll(userId);
+const newApp = await jobApplicationService.create(data);
+```
+
+### Custom Hooks (`~/hooks`)
+
+Reusable React logic:
+
+```typescript
+// ✅ Good: Custom hooks
+import { useLocalStorage, useDebounce } from "~/hooks";
+
+const [value, setValue] = useLocalStorage("key", defaultValue);
+const debouncedValue = useDebounce(searchTerm, 300);
+```
+
+### Validation Schemas (`~/schemas`)
+
+Centralized Zod schemas:
+
+```typescript
+// ✅ Good: Centralized validation
+import { jobApplicationSchema } from "~/schemas";
+
+const validatedData = jobApplicationSchema.parse(formData);
+```
+
+### Feature-based Organization (`~/features`)
+
+Domain-driven feature modules:
+
+```typescript
+// ✅ Good: Feature modules
+import { JobApplicationList } from "~/features/job-applications";
+import { DashboardStats } from "~/features/dashboard";
+```
+
 ### Type Definitions
 
 ```typescript

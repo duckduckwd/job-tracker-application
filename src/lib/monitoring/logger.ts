@@ -1,15 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
 
-export interface LogContext {
-  userId?: string;
-  requestId?: string;
-  ip?: string;
-  userAgent?: string;
-  duration?: number;
-  [key: string]: unknown;
-}
-
-export type LogLevel = "debug" | "info" | "warn" | "error";
+import type { LogContext, LogLevel } from "~/types";
 
 export class Logger {
   private static generateRequestId(): string {

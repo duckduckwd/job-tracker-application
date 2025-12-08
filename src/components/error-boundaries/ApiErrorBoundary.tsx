@@ -1,14 +1,10 @@
 "use client";
 
-import { type ReactNode } from "react";
+import type { ApiErrorBoundaryProps } from "~/types";
 
 import { ErrorBoundary } from "./ErrorBoundary";
 
-interface Props {
-  children: ReactNode;
-}
-
-export function ApiErrorBoundary({ children }: Props) {
+export function ApiErrorBoundary({ children }: ApiErrorBoundaryProps) {
   return (
     <ErrorBoundary
       fallback={

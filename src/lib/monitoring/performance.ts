@@ -1,13 +1,9 @@
 import * as Sentry from "@sentry/nextjs";
 
-import { Logger } from "./logger";
+import { PERFORMANCE } from "~/constants";
+import type { PerformanceMetric } from "~/types";
 
-export interface PerformanceMetric {
-  name: string;
-  value: number;
-  unit: "ms" | "bytes" | "count";
-  tags?: Record<string, string>;
-}
+import { Logger } from "./logger";
 
 export class PerformanceMonitor {
   private static readonly timers = new Map<string, number>();
@@ -41,10 +37,10 @@ export class PerformanceMonitor {
 
     // Alert on slow operations - configurable thresholds
     const thresholds = {
-      "database-query": 500,
-      "api-request": 1000,
-      "file-upload": 5000,
-      default: 1000,
+      "database-query": PERFORMANCE.THRESHOLDS.DATABASE_QUERY,
+      "api-request": PERFORMANCE.THRESHOLDS.API_REQUEST,
+      "file-upload": PERFORMANCE.THRESHOLDS.FILE_UPLOAD,
+      default: PERFORMANCE.THRESHOLDS.DEFAULT,
     };
 
     const threshold =
@@ -61,8 +57,8 @@ export class PerformanceMonitor {
         );
       }
 
-      // Sample 5% of normal operations for breadcrumbs
-      if (Math.random() < 0.05) {
+      // Sample normal operations for breadcrumbs
+      if (Math.random() < PERFORMANCE.SENTRY_SAMPLE_RATE) {
         Sentry.addBreadcrumb({
           category: "performance",
           message: `${operationName} completed`,
@@ -96,8 +92,8 @@ export class PerformanceMonitor {
 
     // Only send high-value metrics to Sentry
     if (process.env.NODE_ENV === "production" && metric.value > 0) {
-      // Only sample 10% of metrics
-      if (Math.random() < 0.1) {
+      // Only sample metrics
+      if (Math.random() < PERFORMANCE.METRICS_SAMPLE_RATE) {
         Sentry.addBreadcrumb({
           category: "metric",
           message: `${metric.name}: ${metric.value}${metric.unit}`,

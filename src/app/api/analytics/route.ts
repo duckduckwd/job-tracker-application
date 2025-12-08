@@ -1,13 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
-interface AnalyticsEvent {
-  name: string;
-  properties?: Record<string, unknown>;
-  userId?: string;
-  timestamp?: string;
-  url?: string;
-  userAgent?: string;
-}
+import type { AnalyticsEvent } from "~/types";
 
 export async function POST(request: NextRequest) {
   try {

@@ -2,6 +2,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { type DefaultSession, type NextAuthConfig } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
 
+import { AUTH_ROUTES, SESSION } from "~/constants";
 import { env } from "~/env";
 import { db } from "~/server/db";
 
@@ -58,8 +59,8 @@ export const authConfig = {
   // Security enhancements
   session: {
     strategy: "database",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
-    updateAge: 24 * 60 * 60, // 24 hours
+    maxAge: SESSION.MAX_AGE,
+    updateAge: SESSION.UPDATE_AGE,
   },
 
   cookies: {
@@ -93,7 +94,7 @@ export const authConfig = {
   },
 
   pages: {
-    error: "/auth/error",
-    signIn: "/auth/signin",
+    error: AUTH_ROUTES.ERROR,
+    signIn: AUTH_ROUTES.SIGN_IN,
   },
 } satisfies NextAuthConfig;

@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 
+import { HTTP_STATUS, RATE_LIMIT } from "~/constants";
 import { SecurityLogger } from "~/lib/security/security-logger";
 
 // Simple in-memory rate limiter (use Redis in production)
@@ -8,8 +9,8 @@ const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 export function rateLimitMiddleware(request: NextRequest): NextResponse | null {
   const ip = request.headers.get("x-forwarded-for") ?? "unknown";
   const now = Date.now();
-  const windowMs = 15 * 60 * 1000; // 15 minutes
-  const maxRequests = 100; // requests per window
+  const windowMs = RATE_LIMIT.WINDOW_MS;
+  const maxRequests = RATE_LIMIT.MAX_REQUESTS;
 
   const key = `${ip}:${Math.floor(now / windowMs)}`;
   const current = rateLimitMap.get(key) ?? {
@@ -22,7 +23,7 @@ export function rateLimitMiddleware(request: NextRequest): NextResponse | null {
     SecurityLogger.logRateLimit(ip, request.nextUrl.pathname);
 
     return new NextResponse("Too Many Requests", {
-      status: 429,
+      status: HTTP_STATUS.TOO_MANY_REQUESTS,
       headers: {
         "Retry-After": Math.ceil((current.resetTime - now) / 1000).toString(),
       },
@@ -33,8 +34,7 @@ export function rateLimitMiddleware(request: NextRequest): NextResponse | null {
   rateLimitMap.set(key, current);
 
   // Cleanup old entries
-  if (Math.random() < 0.01) {
-    // 1% chance
+  if (Math.random() < RATE_LIMIT.CLEANUP_CHANCE) {
     for (const [k, v] of rateLimitMap.entries()) {
       if (v.resetTime < now) rateLimitMap.delete(k);
     }
