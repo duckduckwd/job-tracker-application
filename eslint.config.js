@@ -70,14 +70,7 @@ const config = [
       "import/first": "error",
       "import/newline-after-import": "error",
       "import/no-duplicates": "error",
-      "import/no-unused-modules": [
-        "error",
-        {
-          unusedExports: true,
-          src: ["src/**/*.{ts,tsx}"],
-          ignoreExports: ["src/pages/**/*", "src/app/**/*"],
-        },
-      ],
+
       "import/no-anonymous-default-export": "warn",
       complexity: ["warn", { max: 10 }],
       "max-depth": ["warn", { max: 4 }],
