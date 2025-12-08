@@ -9,11 +9,41 @@ export const env = createEnv({
   server: {
     AUTH_SECRET:
       process.env.NODE_ENV === "production"
-        ? z.string()
-        : z.string().optional(),
-    AUTH_DISCORD_ID: z.string(),
-    AUTH_DISCORD_SECRET: z.string(),
-    DATABASE_URL: z.string().url(),
+        ? z
+            .string()
+            .min(32, "AUTH_SECRET must be at least 32 characters in production")
+        : z
+            .string()
+            .min(8, "AUTH_SECRET must be at least 8 characters")
+            .optional(),
+
+    AUTH_DISCORD_ID: z
+      .string()
+      .refine(
+        (val) => val !== "placeholder" && val !== "test-discord-id",
+        "AUTH_DISCORD_ID cannot be placeholder value",
+      ),
+
+    AUTH_DISCORD_SECRET: z
+      .string()
+      .refine(
+        (val) => val !== "placeholder" && val !== "test-discord-secret",
+        "AUTH_DISCORD_SECRET cannot be placeholder value",
+      ),
+
+    DATABASE_URL: z
+      .string()
+      .url()
+      .refine(
+        (val) => !val.includes("password@"),
+        "DATABASE_URL should not contain weak passwords",
+      ),
+
+    // Add Sentry validation
+    SENTRY_DSN: z.string().url().optional(),
+    SENTRY_ORG: z.string().optional(),
+    SENTRY_PROJECT: z.string().optional(),
+
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -38,6 +68,9 @@ export const env = createEnv({
     AUTH_DISCORD_SECRET: process.env.AUTH_DISCORD_SECRET,
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
+    SENTRY_DSN: process.env.SENTRY_DSN,
+    SENTRY_ORG: process.env.SENTRY_ORG,
+    SENTRY_PROJECT: process.env.SENTRY_PROJECT,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

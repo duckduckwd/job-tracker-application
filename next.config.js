@@ -6,7 +6,59 @@ import "./src/env.js";
 import { withSentryConfig } from "@sentry/nextjs";
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+  async headers() {
+    const securityHeaders = [
+      {
+        key: "X-Frame-Options",
+        value: "DENY",
+      },
+      {
+        key: "X-Content-Type-Options",
+        value: "nosniff",
+      },
+      {
+        key: "Referrer-Policy",
+        value: "origin-when-cross-origin",
+      },
+      {
+        key: "X-XSS-Protection",
+        value: "1; mode=block",
+      },
+      {
+        key: "Permissions-Policy",
+        value: "camera=(), microphone=(), geolocation=()",
+      },
+      {
+        key: "Content-Security-Policy",
+        value: [
+          "default-src 'self'",
+          "script-src 'self' 'unsafe-eval' 'unsafe-inline'", // Next.js needs these
+          "style-src 'self' 'unsafe-inline'", // Tailwind needs inline styles
+          "img-src 'self' data: https:",
+          "font-src 'self' data:",
+          "connect-src 'self' https://api.sentry.io", // Sentry reporting
+          "frame-ancestors 'none'", // Replaces X-Frame-Options
+        ].join("; "),
+      },
+    ];
+
+    // Only add HSTS in production
+    if (process.env.NODE_ENV === "production") {
+      securityHeaders.push({
+        key: "Strict-Transport-Security",
+        value: "max-age=31536000; includeSubDomains",
+      });
+    }
+
+    return [
+      {
+        source: "/(.*)",
+        headers: securityHeaders,
+      },
+    ];
+  },
+};
 
 export default withSentryConfig(config, {
   // For all available options, see:
