@@ -1,4 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
+
 import { Logger } from "./logger";
 
 export interface PerformanceMetric {

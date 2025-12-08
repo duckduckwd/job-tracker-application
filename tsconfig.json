@@ -46,6 +46,7 @@
     "jest.setup.js",
     "jest.env.js",
     "commitlint.config.js",
+    "lighthouserc.js",
     "next.config.js",
     "playwright.config.js",
     "postcss.config.js",

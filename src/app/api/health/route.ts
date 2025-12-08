@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { db } from "~/server/db";
+
 import { Logger } from "~/lib/monitoring/logger";
 import { PerformanceMonitor } from "~/lib/monitoring/performance";
+import { db } from "~/server/db";
 
 export async function GET() {
   const startTime = Date.now();

@@ -1,4 +1,5 @@
 import { type NextRequest } from "next/server";
+
 import { rateLimitMiddleware } from "./middleware/rateLimiting";
 import { tracingMiddleware } from "./middleware/tracing";
 
