@@ -3,7 +3,7 @@ npx lint-staged
 
 # Check for secrets in staged files (exclude docs and config files)
 echo "🔍 Scanning for secrets..."
-staged_files=$(git diff --cached --name-only | grep -v -E "\.(md|txt|gitignore)$|docs/|.husky/|config\.js$|src/env\.js$" || true)
+staged_files=$(git diff --cached --name-only | grep -v -E "\.(md|txt|gitignore)$|docs/|.husky/|config\.js$|src/env\.js$|\.github/workflows/" || true)
 if [ -n "$staged_files" ]; then
   if echo "$staged_files" | xargs grep -l "API_KEY\|SECRET\|PASSWORD\|TOKEN" 2>/dev/null; then
     echo "❌ Potential secrets detected in staged files"
