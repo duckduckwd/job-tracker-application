@@ -38,5 +38,20 @@
     "**/*.js",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules", "generated", "docs"]
+  "exclude": [
+    "node_modules",
+    "generated",
+    "docs",
+    "jest.config.js",
+    "jest.setup.js",
+    "jest.env.js",
+    "commitlint.config.js",
+    "next.config.js",
+    "postcss.config.js",
+    "prettier.config.js",
+    ".next",
+    "coverage",
+    "*.config.js",
+    "*.config.mjs"
+  ]
 }

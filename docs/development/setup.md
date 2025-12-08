@@ -213,8 +213,10 @@ npm run prepare
 
 1. Read [Environment Variables Guide](./environment-variables.md)
 2. Review [Database Setup Guide](./database-setup.md)
-3. Check [API Documentation](../api/README.md)
-4. Start building features!
+3. Learn [Package Management](./package-management.md) best practices
+4. Check [Git Workflow Guide](./git-workflow.md) for collaboration
+5. Review [API Documentation](../api/README.md)
+6. Start building features!
 
 ## Getting Help
 

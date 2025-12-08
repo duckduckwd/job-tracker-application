@@ -4,6 +4,11 @@
  */
 import "./src/env.js";
 import { withSentryConfig } from "@sentry/nextjs";
+import bundleAnalyzer from "@next/bundle-analyzer";
+
+const withBundleAnalyzer = bundleAnalyzer({
+  enabled: process.env.ANALYZE === "true",
+});
 
 /** @type {import("next").NextConfig} */
 const config = {
@@ -61,7 +66,7 @@ const config = {
   },
 };
 
-export default withSentryConfig(config, {
+export default withSentryConfig(withBundleAnalyzer(config), {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
