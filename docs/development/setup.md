@@ -220,6 +220,27 @@ npm run bundle:check
 npm run analyze
 ```
 
+### Error Boundaries
+
+- React Error Boundaries for graceful error handling
+- Automatic error reporting to Sentry
+- Custom fallback UI for different error types
+- Recovery mechanisms with "Try again" functionality
+
+**Available Components:**
+
+- `ErrorBoundary` - General purpose error boundary
+- `ApiErrorBoundary` - Specialized for API errors
+
+```typescript
+// Basic usage
+import { ErrorBoundary } from '@/components';
+
+<ErrorBoundary>
+  <YourComponent />
+</ErrorBoundary>
+```
+
 ### Code Quality Tools
 
 #### Import Sorting
