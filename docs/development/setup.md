@@ -83,7 +83,7 @@ Expected response:
 }
 ```
 
-### Run Tests
+### Run Tests & Quality Checks
 
 ```bash
 # Run unit tests
@@ -101,8 +101,26 @@ npm run test:e2e
 # Run E2E tests with UI
 npm run test:e2e:ui
 
-# Run linting
+# Run performance audit
+npm run perf:audit
+
+# Check for unused code
+npm run unused:check
+
+# Check for dead code (unused files)
+npm run deadcode:check
+
+# Check for unused dependencies
+npm run deadcode:dependencies
+
+# Run linting (includes import sorting, complexity, security & modern practices)
 npm run lint
+
+# Run all quality checks at once
+npm run quality:check
+
+# Fix linting issues automatically
+npm run lint:fix
 
 # Run type checking
 npm run typecheck
@@ -131,12 +149,17 @@ npm run test:watch       # Run tests in watch mode
 npm run test:coverage    # Run tests with coverage
 npm run test:e2e         # Run E2E tests
 npm run test:e2e:ui      # Run E2E tests with UI
-npm run typecheck        # Run TypeScript checks
+npm run perf:audit           # Run Lighthouse performance audit
+npm run unused:check         # Check for unused code
+npm run deadcode:check       # Find unused files
+npm run deadcode:dependencies # Find unused dependencies
+npm run quality:check        # Run all quality checks
+npm run typecheck            # Run TypeScript checks
 npm run db:push          # Push schema to database
 npm run db:studio        # Open Prisma Studio
 ```
 
-## Testing
+## Testing & Code Quality
 
 ### Unit Tests (Jest)
 
@@ -156,6 +179,56 @@ npm run playwright:install
 
 # Run E2E tests
 npm run test:e2e
+```
+
+### Performance Testing (Lighthouse)
+
+- Automated performance audits on pull requests
+- Measures Core Web Vitals and accessibility
+- Performance budgets enforced (80% performance, 90% accessibility)
+
+```bash
+# Run performance audit locally
+npm run perf:audit
+```
+
+### Code Quality Tools
+
+#### Import Sorting
+
+- Automatically sorts imports (Node modules → Internal → Relative)
+- Enforced by ESLint, fixed with `npm run lint:fix`
+
+#### Unused Code Detection
+
+- ESLint detects unused variables and exports in real-time
+- ts-prune provides deeper analysis of unused code
+
+```bash
+# Check for unused exports
+npm run unused:check
+
+# Get JSON output for CI integration
+npm run unused:check:json
+```
+
+#### Complexity Analysis
+
+- **Built-in ESLint**: Cyclomatic complexity (>10), nesting depth (4 levels), function length (50 lines), parameters (4 max)
+- **SonarJS**: Cognitive complexity (>15), duplicate strings, identical functions, redundant booleans
+- **Unicorn**: Modern JavaScript practices, better regex patterns, consistent destructuring
+- **Security**: Detects potential vulnerabilities, unsafe patterns, and security anti-patterns
+
+#### Dead Code Elimination
+
+- Detects unused files and dependencies across the project
+
+```bash
+# Find unused files
+npm run deadcode:check
+
+# Find unused dependencies
+npm run deadcode:dependencies
 ```
 
 ## IDE Configuration

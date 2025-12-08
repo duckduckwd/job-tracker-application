@@ -1,7 +1,10 @@
 import { FlatCompat } from "@eslint/eslintrc";
-import tseslint from "typescript-eslint";
 import importPlugin from "eslint-plugin-import";
+import security from "eslint-plugin-security";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
+import sonarjs from "eslint-plugin-sonarjs";
+import unicorn from "eslint-plugin-unicorn";
+import tseslint from "typescript-eslint";
 
 const compat = new FlatCompat({
   baseDirectory: import.meta.dirname,
@@ -28,7 +31,10 @@ const config = [
     files: ["**/*.ts", "**/*.tsx"],
     plugins: {
       import: importPlugin,
+      security,
       "simple-import-sort": simpleImportSort,
+      sonarjs,
+      unicorn,
     },
     rules: {
       "@typescript-eslint/array-type": "off",
@@ -39,18 +45,76 @@ const config = [
       ],
       "@typescript-eslint/no-unused-vars": [
         "warn",
-        { argsIgnorePattern: "^_" },
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          destructuredArrayIgnorePattern: "^_",
+        },
       ],
       "@typescript-eslint/require-await": "off",
       "@typescript-eslint/no-misused-promises": [
         "error",
         { checksVoidReturn: { attributes: false } },
       ],
+      "@typescript-eslint/prefer-nullish-coalescing": "error",
+      "@typescript-eslint/prefer-optional-chain": "error",
+      "@typescript-eslint/no-unnecessary-condition": "warn",
+      "@typescript-eslint/no-unnecessary-type-assertion": "error",
+      "@typescript-eslint/prefer-readonly": "warn",
+      "@typescript-eslint/switch-exhaustiveness-check": "error",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/no-non-null-assertion": "warn",
+      "@typescript-eslint/prefer-as-const": "error",
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
       "import/first": "error",
       "import/newline-after-import": "error",
       "import/no-duplicates": "error",
+      "import/no-unused-modules": [
+        "error",
+        {
+          unusedExports: true,
+          src: ["src/**/*.{ts,tsx}"],
+          ignoreExports: ["src/pages/**/*", "src/app/**/*"],
+        },
+      ],
+      "import/no-anonymous-default-export": "warn",
+      complexity: ["warn", { max: 10 }],
+      "max-depth": ["warn", { max: 4 }],
+      "max-lines-per-function": [
+        "warn",
+        { max: 50, skipBlankLines: true, skipComments: true },
+      ],
+      "max-params": ["warn", { max: 4 }],
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+      "no-debugger": "error",
+      "no-alert": "error",
+      "prefer-const": "error",
+      "no-var": "error",
+      "object-shorthand": "warn",
+      "prefer-template": "warn",
+      "security/detect-object-injection": "warn",
+      "security/detect-non-literal-regexp": "warn",
+      "security/detect-unsafe-regex": "error",
+      "security/detect-buffer-noassert": "error",
+      "security/detect-child-process": "warn",
+      "security/detect-disable-mustache-escape": "error",
+      "security/detect-eval-with-expression": "error",
+      "security/detect-no-csrf-before-method-override": "error",
+      "sonarjs/cognitive-complexity": ["warn", 15],
+      "sonarjs/no-duplicate-string": ["warn", { threshold: 3 }],
+      "sonarjs/no-identical-functions": "warn",
+      "sonarjs/no-redundant-boolean": "error",
+      "sonarjs/prefer-immediate-return": "warn",
+
+      "unicorn/better-regex": "error",
+      "unicorn/catch-error-name": "error",
+      "unicorn/consistent-destructuring": "warn",
+      "unicorn/no-array-for-each": "warn",
+      "unicorn/no-for-loop": "warn",
+      "unicorn/prefer-includes": "error",
+      "unicorn/prefer-string-starts-ends-with": "error",
+      "unicorn/prefer-ternary": "warn",
     },
   },
   {

@@ -1,0 +1,11 @@
+{
+    "ignore": [
+        "src/pages/**/*",
+        "src/app/**/*",
+        "*.d.ts",
+        "src/middleware.ts",
+        "src/instrumentation.ts",
+        "next.config.js",
+        "tailwind.config.js"
+    ]
+}
