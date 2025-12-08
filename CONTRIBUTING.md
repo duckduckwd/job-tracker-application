@@ -13,7 +13,7 @@ Thank you for your interest in contributing to the Job Application Tracker! This
 - **Be constructive**: Provide helpful feedback and suggestions
 - **Be patient**: Remember that everyone is learning and growing
 
-### Unacceptable Behavior
+### Unacceptable Behaviour
 
 - Harassment, discrimination, or offensive language
 - Personal attacks or trolling
@@ -286,11 +286,11 @@ Clear description of the bug.
 3. Scroll down to '...'
 4. See error
 
-## Expected Behavior
+## Expected Behaviour
 
 What you expected to happen.
 
-## Actual Behavior
+## Actual Behaviour
 
 What actually happened.
 
@@ -334,7 +334,7 @@ Mockups, examples, or other relevant information.
 ### Reporting Security Issues
 
 - **Do not** create public issues for security vulnerabilities
-- Email security concerns to: security@your-domain.com
+- Email security concerns to: <security@your-domain.com>
 - Include detailed information about the vulnerability
 - Allow reasonable time for response before public disclosure
 
@@ -388,14 +388,14 @@ async function createJobApplication(
 
 - Use React.memo for expensive components
 - Implement proper loading states
-- Optimize database queries
+- Optimise database queries
 - Use pagination for large datasets
 
 ### Bundle Size
 
 - Monitor bundle size with each change
 - Use dynamic imports for large dependencies
-- Optimize images and assets
+- Optimise images and assets
 - Remove unused dependencies
 
 ## Accessibility Guidelines
@@ -461,7 +461,7 @@ New contributors are welcome! Don't hesitate to:
 
 ### Contributors
 
-All contributors will be recognized in:
+All contributors will be recognised in:
 
 - README.md contributors section
 - Release notes
