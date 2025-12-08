@@ -12,7 +12,7 @@ const compat = new FlatCompat({
 
 const config = [
   {
-    ignores: [".next", "docs", "generated", "next-env.d.ts"],
+    ignores: [".next", "docs", "generated", "next-env.d.ts", "coverage"],
   },
   ...compat.extends("next/core-web-vitals"),
   ...tseslint.configs.recommended.map((config) => ({

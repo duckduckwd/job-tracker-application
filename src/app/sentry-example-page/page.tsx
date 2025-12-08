@@ -50,6 +50,7 @@ export default function Page() {
           <a
             target="_blank"
             href="https://personal-projects-mj.sentry.io/issues/?project=4510481899061328"
+            rel="noreferrer"
           >
             Issues Page
           </a>
@@ -57,6 +58,7 @@ export default function Page() {
           <a
             target="_blank"
             href="https://docs.sentry.io/platforms/javascript/guides/nextjs/"
+            rel="noreferrer"
           >
             read our docs
           </a>
