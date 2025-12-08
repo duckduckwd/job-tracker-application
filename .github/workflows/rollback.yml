@@ -1,0 +1,39 @@
+name: Rollback
+
+on:
+  workflow_dispatch:
+    inputs:
+      git_ref:
+        description: "Git commit/tag to rollback to (e.g., abc123 or v1.0.0)"
+        required: true
+        type: string
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.git_ref }}
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          
+      - run: npm ci
+      - run: npm run build
+      
+      - name: Deploy rollback version
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.PROJECT_ID }}
+          vercel-args: '--prod'
+          
+      - name: Rollback complete
+        run: |
+          echo "Rollback completed to: ${{ github.event.inputs.git_ref }}"
+          echo "New deployment is live at production URL"

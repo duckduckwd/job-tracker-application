@@ -1,21 +1,69 @@
-name: CI
+name: CI Pipeline
 
 on:
-  # push:
-  #   branches: [main, develop]
+  push:
+    branches: [main, develop]
   pull_request:
     branches: [main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-node@v4
         with:
-          node-version: "lts"
+          node-version: "18"
           cache: "npm"
+          
       - run: npm ci
-      - run: npm run build
-      - run: npm run lint
-      - run: npm run type-check
+      
+      - name: Setup test environment
+        run: |
+          cp .env.example .env.test
+          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/test" >> .env.test
+          
+      - name: Setup database
+        run: npm run db:push
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
+          
+      - name: Type checking
+        run: npm run typecheck
+        
+      - name: Linting
+        run: npm run lint
+        
+      - name: Unit tests with coverage
+        run: npm run test:coverage
+        
+      - name: E2E tests
+        run: npm run test:e2e
+        
+      - name: Code quality checks
+        run: npm run quality:check
+        
+      - name: Build application
+        run: npm run build
+        
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+          fail_ci_if_error: false

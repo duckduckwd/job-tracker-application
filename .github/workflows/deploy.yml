@@ -1,25 +1,61 @@
 name: Deploy
 
 on:
-  # push:
-  #   branches: [main]
+  push:
+    branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  deploy-preview:
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    
     steps:
       - uses: actions/checkout@v4
+      
       - uses: actions/setup-node@v4
         with:
-          node-version: "lts"
+          node-version: "18"
           cache: "npm"
+          
       - run: npm ci
       - run: npm run build
-      - name: Deploy to Vercel
+      
+      - name: Deploy Preview
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.ORG_ID }}
           vercel-project-id: ${{ secrets.PROJECT_ID }}
+          # No --prod flag = preview deployment (free tier compatible)
+          
+  deploy-production:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          
+      - run: npm ci
+      - run: npm run build
+      
+      - name: Deploy to Production
+        uses: amondnet/vercel-action@v25
+        id: deploy
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.PROJECT_ID }}
+          vercel-args: '--prod'
+          
+      - name: Deployment complete
+        run: |
+          echo "Production deployment completed"
+          echo "URL: https://your-app.vercel.app"
