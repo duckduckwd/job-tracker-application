@@ -96,53 +96,76 @@ git push -u origin hotfix/critical-security-patch
 
 #### Making Commits
 
+**Method 1: Guided Commits (Recommended)**
+
 ```bash
 # Stage changes
 git add .
 
-# Commit with descriptive message
-git commit -m "feat(jobs): add filtering by application status
-
-- Add status filter dropdown to job list
-- Implement filter logic in useJobApplications hook
-- Add tests for filtering functionality
-- Update job list component to handle filtered results"
+# Use interactive commit tool
+npm run commit
+# This will prompt you for:
+# - Type (feat, fix, docs, etc.)
+# - Scope (optional)
+# - Description
+# - Body (optional)
+# - Breaking changes (optional)
 
 # Push changes
 git push origin feature/add-job-filtering
 ```
 
-#### Commit Message Format
+**Method 2: Manual Commits**
 
 ```bash
-# Format: type(scope): description
-#
-# Body (optional): More detailed explanation
-# - List of changes
-# - Implementation details
-# - Breaking changes
-#
-# Footer (optional): Issue references
+# Stage changes
+git add .
 
-# Examples:
-feat(auth): add OAuth login with Discord
-fix(db): resolve connection timeout issues
-docs(api): update health check endpoint documentation
-refactor(jobs): extract job service logic
-test(auth): add unit tests for authentication flow
-chore(deps): update dependencies to latest versions
+# Commit with properly formatted message
+git commit -m "feat: add filtering by application status"
+# Note: Message will be automatically validated
+
+# Push changes
+git push origin feature/add-job-filtering
 ```
 
-#### Commit Types
+#### Commit Message Format (Enforced)
+
+**Format**: `type[optional scope]: description`
+
+```bash
+# ✅ Valid examples (will be accepted):
+feat: add OAuth login with Discord
+fix: resolve connection timeout issues
+docs: update health check endpoint documentation
+refactor: extract job service logic
+test: add unit tests for authentication flow
+chore: update dependencies to latest versions
+
+# ❌ Invalid examples (will be rejected):
+"added login"           # No type
+"feat add login"        # Missing colon
+"FEAT: add login"       # Wrong case
+"feature: add login"    # Invalid type
+```
+
+**Automatic Validation**: All commit messages are automatically validated by commitlint. Invalid messages will be rejected.
+
+#### Commit Types (Enforced)
 
 - **feat**: New feature
 - **fix**: Bug fix
 - **docs**: Documentation only changes
 - **style**: Changes that don't affect code meaning (formatting, etc.)
 - **refactor**: Code change that neither fixes a bug nor adds a feature
-- **perf**: Performance improvement
 - **test**: Adding missing tests or correcting existing tests
 - **chore**: Changes to build process or auxiliary tools
+- **perf**: Performance improvement
+- **ci**: Changes to CI configuration files and scripts
+- **build**: Changes that affect the build system or external dependencies
+- **revert**: Reverts a previous commit
+
+**Note**: Only these types are allowed. Other types will be rejected by commitlint.
 
 ### 3. Code Review Process
 
@@ -374,23 +397,148 @@ git diff --cached --name-only | xargs grep -l "API_KEY\|SECRET\|PASSWORD" && {
 echo "✅ Pre-commit checks passed"
 ```
 
-### Commit Message Hook
+### Commit Message Hook (Automated)
 
 ```bash
-#!/bin/sh
+#!/usr/bin/env sh
 # .husky/commit-msg
+. "$(dirname -- "$0")/_/husky.sh"
 
-# Validate commit message format
-commit_regex='^(feat|fix|docs|style|refactor|perf|test|chore)(\(.+\))?: .{1,50}'
+# Commitlint automatically validates commit messages
+npx --no -- commitlint --edit ${1}
+```
 
-if ! grep -qE "$commit_regex" "$1"; then
-  echo "❌ Invalid commit message format"
-  echo "Format: type(scope): description"
-  echo "Example: feat(auth): add OAuth login"
-  exit 1
-fi
+**What it does**:
 
-echo "✅ Commit message format is valid"
+- Automatically validates commit messages using commitlint
+- Enforces conventional commit format
+- Rejects invalid commit messages
+- No manual configuration needed
+
+### Pre-push Hook (Automated)
+
+```bash
+#!/usr/bin/env sh
+# .husky/pre-push
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔍 Running pre-push checks..."
+
+# Run type checking
+npm run typecheck || exit 1
+
+# Run linting
+npm run lint || exit 1
+
+# Run tests
+npm run test || exit 1
+
+# Run build to ensure it works
+npm run build || exit 1
+
+echo "✅ All pre-push checks passed!"
+```
+
+**What it does**:
+
+- Runs comprehensive checks before every push
+- Prevents broken code from reaching remote repository
+- Catches issues early before CI/CD
+- Maintains code quality standards
+
+## Push Guidelines
+
+### Pre-Push Checklist (Automated)
+
+Before every push, the following checks run automatically:
+
+```bash
+# Automated pre-push hook runs:
+npm run typecheck  # TypeScript validation
+npm run lint       # Code quality checks
+npm run test       # Unit tests
+npm run build      # Ensure build works
+```
+
+### Manual Push Best Practices
+
+```bash
+# ✅ Good: Push frequently with small changes
+git push origin feature/add-login
+
+# ✅ Good: Push after completing logical units of work
+git push origin feature/user-dashboard
+
+# ❌ Avoid: Pushing broken code
+# ❌ Avoid: Large commits with multiple unrelated changes
+# ❌ Avoid: Pushing without running tests locally
+```
+
+### Force Push Guidelines
+
+```bash
+# ✅ Safe: Use --force-with-lease (checks for remote changes)
+git push --force-with-lease origin feature/my-branch
+
+# ❌ Dangerous: Never use --force on shared branches
+git push --force origin main  # DON'T DO THIS
+
+# ✅ Safe: Only force push on your own feature branches
+git push --force-with-lease origin feature/my-work
+```
+
+### Branch Protection Rules
+
+- **main**: Protected, requires PR and reviews, no direct pushes
+- **develop**: Protected, requires PR, no direct pushes
+- **feature/\***: Can force push (your own branches only)
+- **hotfix/\***: Requires review before merging to main
+
+### Safe Push Commands
+
+```bash
+# Safe push with all checks (add to package.json)
+npm run push-safe     # Runs pre-push + git push
+npm run push-force-safe  # Runs pre-push + git push --force-with-lease
+```
+
+## Git Best Practices (Implemented)
+
+### Automated File Handling
+
+- **`.gitattributes`**: Ensures consistent line endings across platforms
+- **Enhanced `.gitignore`**: Prevents IDE, OS, and security files from being committed
+
+### Automated Maintenance
+
+```bash
+# Clean up merged branches
+npm run git:clean
+
+# Prune remote references and garbage collect
+npm run git:prune
+```
+
+### Enhanced Security Scanning
+
+Pre-commit hook automatically:
+
+- Scans for potential secrets (API_KEY, SECRET, PASSWORD, TOKEN)
+- Detects large files (>1MB) before commit
+- Runs lint-staged for code quality
+
+### Post-merge Automation
+
+After merging/pulling, automatically:
+
+- Reinstalls dependencies if `package.json` changed
+- Regenerates Prisma client if `schema.prisma` changed
+
+### Repository Maintenance
+
+```bash
+# Weekly cleanup routine
+npm run git:clean && npm run git:prune
 ```
 
 ## Troubleshooting

@@ -42,11 +42,35 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 
-# idea files
-.idea
+# IDE and Editor files
+.idea/
+.vscode/settings.json
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Security
+.env.local
+.env.production
+*.pem
+*.key
+.secrets
+
 # Sentry Config File
 .env.sentry-build-plugin
-
-# Secrets
-.secrets
 

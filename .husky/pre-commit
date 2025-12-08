@@ -1,1 +1,29 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run lint-staged
 npx lint-staged
+
+# Check for secrets in staged files (exclude docs and config files)
+echo "🔍 Scanning for secrets..."
+staged_files=$(git diff --cached --name-only | grep -v -E "\.(md|txt|gitignore)$|docs/|.husky/|config\.js$")
+if [ -n "$staged_files" ]; then
+  echo "$staged_files" | xargs grep -l "API_KEY\|SECRET\|PASSWORD\|TOKEN" 2>/dev/null && {
+    echo "❌ Potential secrets detected in staged files"
+    exit 1
+  }
+fi
+
+# Check for large files (>1MB)
+echo "📏 Checking file sizes..."
+git diff --cached --name-only | while read file; do
+  if [ -f "$file" ]; then
+    size=$(wc -c < "$file" 2>/dev/null || echo 0)
+    if [ $size -gt 1048576 ]; then  # 1MB
+      echo "❌ Large file detected: $file ($size bytes)"
+      exit 1
+    fi
+  fi
+done
+
+echo "✅ Pre-commit checks passed"

@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🔄 Post-merge checks..."
+
+# Reinstall dependencies if package.json changed
+if git diff-tree -r --name-only --no-commit-id HEAD@{1} HEAD | grep --quiet "package.json"; then
+  echo "📦 package.json changed, running npm install..."
+  npm install
+fi
+
+# Regenerate Prisma client if schema changed
+if git diff-tree -r --name-only --no-commit-id HEAD@{1} HEAD | grep --quiet "prisma/schema.prisma"; then
+  echo "🗄️ Prisma schema changed, regenerating client..."
+  npx prisma generate
+fi
+
+echo "✅ Post-merge checks complete"
