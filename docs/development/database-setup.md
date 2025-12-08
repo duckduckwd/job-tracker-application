@@ -65,30 +65,31 @@ DATABASE_URL="postgresql://[user]:[password]@[host]/[database]?sslmode=require"
 ### Schema Management
 
 ```bash
-# Generate Prisma client
+# Generate Prisma client and create migration
 npm run db:generate
 
-# Push schema to database (development)
+# Push schema to database (development only)
 npm run db:push
 
-# Create and apply migration
+# Apply migrations to production
 npm run db:migrate
 
-# Deploy migrations (production)
-npm run db:deploy
-```
-
-### Database Inspection
-
-```bash
-# Open Prisma Studio (database GUI)
-npm run db:studio
-
-# View database schema
-npx prisma db pull
+# Seed database with initial data
+npm run db:seed
 
 # Reset database (development only)
-npx prisma db reset
+npm run db:reset
+
+# Open Prisma Studio (database GUI)
+npm run db:studio
+```
+
+### Custom Client Location
+
+This project uses a custom Prisma client location (`../generated/prisma`) instead of the default `@prisma/client`. Import the client like this:
+
+```typescript
+import { PrismaClient } from "../generated/prisma";
 ```
 
 ## Schema Overview
@@ -112,13 +113,14 @@ npx prisma db reset
 
 ```bash
 # 1. Modify schema in prisma/schema.prisma
-# 2. Push changes to development database
-npm run db:push
+# 2. Generate migration and update client
+npm run db:generate
 
-# 3. When ready, create migration
-npx prisma migrate dev --name add-job-applications
+# 3. Seed database if needed
+npm run db:seed
 
-# 4. Migration files created in prisma/migrations/
+# 4. View data in Prisma Studio
+npm run db:studio
 ```
 
 ### Production Deployment
@@ -126,9 +128,6 @@ npx prisma migrate dev --name add-job-applications
 ```bash
 # Apply migrations to production
 npm run db:migrate
-
-# Or use Prisma deploy command
-npx prisma migrate deploy
 ```
 
 ## Connection Pooling
@@ -222,10 +221,10 @@ psql "postgresql://postgres:password@localhost:5432/job-application-tracker"
 
 ```bash
 # Reset migrations (development only)
-npx prisma migrate reset
+npm run db:reset
 
 # Force push schema (development only)
-npx prisma db push --force-reset
+npm run db:push -- --force-reset
 
 # Check migration status
 npx prisma migrate status
@@ -237,7 +236,7 @@ npx prisma migrate status
 # Pull current database schema
 npx prisma db pull
 
-# Generate new client
+# Generate new client (regenerates to ../generated/prisma)
 npx prisma generate
 
 # Restart development server
