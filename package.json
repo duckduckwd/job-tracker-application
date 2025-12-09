@@ -108,7 +108,7 @@
     "ts-prune": "^0.10.3",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.27.0",
-    "unimported": "^1.31.0"
+    "unimported": "^1.31.1"
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
