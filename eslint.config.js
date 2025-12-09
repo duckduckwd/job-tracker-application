@@ -139,6 +139,8 @@ const config = [
       "**/*test*/**",
       "**/*.example.*",
       "**/*.demo.*",
+      "**/*.test.*",
+      "**/*.spec.*",
     ],
     rules: {
       "max-lines-per-function": "off",
