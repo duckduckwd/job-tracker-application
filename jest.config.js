@@ -11,6 +11,13 @@ const customJestConfig = {
     customExportConditions: [""],
   },
   setupFiles: ["<rootDir>/jest.env.js"],
+  testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(test).[jt]s?(x)"],
+  testPathIgnorePatterns: [
+    "/node_modules/",
+    "/.next/",
+    "/e2e/",
+    "\\.spec\\.[jt]sx?$",
+  ],
   collectCoverage: true,
   collectCoverageFrom: [
     "src/**/*.{js,jsx,ts,tsx}",
