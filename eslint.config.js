@@ -146,6 +146,7 @@ const config = [
       "max-lines-per-function": "off",
       complexity: "off",
       "sonarjs/cognitive-complexity": "off",
+      "sonarjs/no-duplicate-string": "off",
     },
   },
   {
