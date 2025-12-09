@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { AnalyticsDemo } from "~/components/AnalyticsDemo";
+import { AnalyticsDemo } from "~/components";
 
 export default function HomePage() {
   return (

@@ -1,6 +1,9 @@
-// Service Layer
-// Add business logic services here
-
-export * from "./analytics.service";
-export * from "./auth.service";
-export * from "./job-application.service";
+/**
+ * Service Layer
+ *
+ * Add business logic services here as features are built.
+ *
+ * Example:
+ * export * from "./analytics.service"
+ * export * from "./job-application.service"
+ */
