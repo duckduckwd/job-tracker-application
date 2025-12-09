@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     // In production, you could store in database or send to external service
     // For now, just return success
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch {
     // For production APIs with validation, use handleApiError() from ~/utils
     return NextResponse.json(
       { error: "Failed to track event" },
