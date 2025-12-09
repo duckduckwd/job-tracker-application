@@ -132,16 +132,30 @@ npm run db:migrate
 
 ## Connection Pooling
 
-### Development
+Prisma automatically manages connection pooling with sensible defaults.
 
-No pooling needed for local development.
+**For detailed information on connection pooling configuration, see:**
 
-### Production
+- [Connection Pooling Guide](../database/connection-pooling.md)
 
-Configure connection limits in DATABASE_URL:
+### Quick Reference
+
+**Development:** No configuration needed.
+
+**Production (Serverless):** Add connection limits to DATABASE_URL:
 
 ```bash
-DATABASE_URL="postgresql://user:pass@host:5432/db?connection_limit=10&pool_timeout=10"
+DATABASE_URL="postgresql://user:pass@host:5432/db?connection_limit=5&pool_timeout=10"
+```
+
+**Production (Recommended):** Use external connection pooler:
+
+```bash
+# Supabase Pooler
+DATABASE_URL="postgresql://user:pass@pooler.supabase.com:6543/db?pgbouncer=true"
+
+# Neon (automatically pooled)
+DATABASE_URL="postgresql://user:pass@ep-xxx.neon.tech/db"
 ```
 
 ## Backup and Restore

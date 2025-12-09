@@ -47,7 +47,14 @@
     "unused:ignore": "ts-prune | grep -v 'used in module'",
     "deadcode:check": "npx unimported",
     "deadcode:dependencies": "npx depcheck",
-    "quality:check": "npm run lint && npm run unused:check && npm run deadcode:check && npm run deadcode:dependencies"
+    "quality:check": "npm run lint && npm run unused:check && npm run deadcode:check && npm run deadcode:dependencies",
+    "ui:init": "npx shadcn@latest init",
+    "ui:add": "npx shadcn@latest add",
+    "docker:dev": "docker-compose up -d",
+    "docker:dev:down": "docker-compose down",
+    "docker:dev:logs": "docker-compose logs -f",
+    "docker:prod": "docker-compose -f docker-compose.prod.yml up --build",
+    "docker:prod:down": "docker-compose -f docker-compose.prod.yml down"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.2",

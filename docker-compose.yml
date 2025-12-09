@@ -1,16 +1,13 @@
-version: "3.8"
-services:
-  app:
-    build: .
-    ports:
-      - "3000:3000"
-    environment:
-      - DATABASE_URL=postgresql://postgres:password@db:5432/jobtracker
-    depends_on:
-      - db
+# Development Docker Compose Configuration
+# Use: docker-compose up (or docker compose up)
 
+version: "3.8"
+
+services:
+  # PostgreSQL Database
   db:
-    image: postgres:15
+    image: postgres:15-alpine
+    container_name: jobtracker-db
     environment:
       POSTGRES_DB: jobtracker
       POSTGRES_USER: postgres
@@ -19,6 +16,60 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis (Optional - use with --profile cache)
+  redis:
+    image: redis:7-alpine
+    container_name: jobtracker-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+    profiles:
+      - cache
+
+  # Mailhog for email testing (Optional - use with --profile mail)
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: jobtracker-mailhog
+    ports:
+      - "1025:1025" # SMTP
+      - "8025:8025" # Web UI
+    restart: unless-stopped
+    profiles:
+      - mail
+
+  # pgAdmin for database management (Optional - use with --profile admin)
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: jobtracker-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+    restart: unless-stopped
+    profiles:
+      - admin
 
 volumes:
   postgres_data:
+  redis_data:
+  pgadmin_data:

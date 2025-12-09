@@ -65,6 +65,9 @@ const config = [
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-non-null-assertion": "warn",
       "@typescript-eslint/prefer-as-const": "error",
+      "@typescript-eslint/no-unsafe-call": "warn",
+      "@typescript-eslint/no-unsafe-assignment": "warn",
+      "@typescript-eslint/no-unsafe-return": "warn",
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
       "import/first": "error",
@@ -154,6 +157,14 @@ const config = [
       "no-console": "off",
       "security/detect-object-injection": "off",
       "max-lines-per-function": "off",
+    },
+  },
+  {
+    files: ["**/utils/**", "**/lib/**"],
+    rules: {
+      "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/no-unsafe-assignment": "off",
+      "@typescript-eslint/no-unsafe-return": "off",
     },
   },
   {

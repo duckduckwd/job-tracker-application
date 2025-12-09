@@ -6,10 +6,8 @@ import { twMerge } from "tailwind-merge";
  */
 export function cn(...inputs: ClassValue[]): string {
   // clsx handles conditional logic and arrays/objects
-
   const className = clsx(...inputs);
 
   // twMerge resolves Tailwind conflicts and returns a string
-
   return twMerge(className);
 }

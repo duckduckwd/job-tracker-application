@@ -1,6 +1,43 @@
+# Dependencies
 node_modules
+npm-debug.log*
+
+# Next.js
 .next
+out
+
+# Testing
+coverage
+.nyc_output
+
+# Environment
+.env
+.env.local
+.env.*.local
+.env.test
+
+# Git
 .git
+.gitignore
+
+# Documentation
+docs
 README.md
-Dockerfile
-.dockerignore
+CONTRIBUTING.md
+
+# CI/CD
+.github
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+*.log
+.husky

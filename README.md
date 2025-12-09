@@ -24,6 +24,20 @@ To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the fo
 
 You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
 
+## UI Components
+
+### Quick Setup with shadcn/ui
+
+```bash
+# Initialize shadcn/ui
+npm run ui:init
+
+# Add components
+npm run ui:add button input card
+```
+
+For detailed guidance on building custom components, see [UI Components Guide](./docs/development/ui-components.md).
+
 ## Error Tracking with Sentry
 
 ### Recommended: Sentry Cloud (Free Tier)

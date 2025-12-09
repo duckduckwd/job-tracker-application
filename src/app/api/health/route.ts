@@ -7,6 +7,8 @@ import { db } from "~/server/db";
 export async function GET() {
   const startTime = Date.now();
 
+  // Note: Health checks use custom error format for monitoring tools
+  // For standard API routes, use handleApiError() from ~/utils
   try {
     // Check database connectivity
     const dbCheck = await PerformanceMonitor.timeAsync(
