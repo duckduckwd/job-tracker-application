@@ -22,7 +22,8 @@ const openSection = async (
   sectionTitle: string,
 ) => {
   const button = screen.getByRole("button", {
-    name: new RegExp(`Toggle.*${sectionTitle}`, "i"),
+    name: (accessibleName: string) =>
+      accessibleName.toLowerCase().includes(sectionTitle.toLowerCase()),
   });
   await user.click(button);
 };
