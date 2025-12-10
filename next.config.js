@@ -54,7 +54,7 @@ const config = {
           "style-src 'self' 'unsafe-inline'", // Tailwind needs inline styles
           "img-src 'self' data: https:",
           "font-src 'self' data:",
-          "connect-src 'self' https://api.sentry.io", // Sentry reporting
+          "connect-src 'self' https://api.sentry.io https://*.ingest.sentry.io https://*.ingest.de.sentry.io https://*.ingest.us.sentry.io", // Sentry reporting
           "frame-ancestors 'none'", // Replaces X-Frame-Options
         ].join("; "),
       },

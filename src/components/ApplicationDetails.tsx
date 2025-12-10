@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { ComponentProps } from "react";
 import {
@@ -9,6 +11,7 @@ import {
 
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
+import { CollapsibleSection } from "~/components/ui/collapsible-section";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Switch } from "~/components/ui/switch";
@@ -16,6 +19,13 @@ import {
   type JobApplicationInput,
   jobApplicationSchema,
 } from "~/schemas/jobApplication.schema";
+
+const sectionTitles = {
+  role: "Role Details (Role, Company, Role Type, Location, Salary)",
+  timeline:
+    "Timeline (Date Applied, Advert Link, CV Used, Response Date, Status)",
+  contact: "Contact Details (Name, Email, Phone, LinkedIn Connection)",
+};
 
 const FormInput = ({
   label,
@@ -31,7 +41,12 @@ const FormInput = ({
 } & Omit<ComponentProps<typeof Input>, "name">) => (
   <div>
     <Label htmlFor={id}>{label}</Label>
-    <Input id={id} {...register(id)} {...props} />
+    <Input
+      id={id}
+      {...register(id)}
+      aria-invalid={error ? "true" : undefined}
+      {...props}
+    />
     {error && (
       <span className="mt-1 text-sm text-red-500">{error.message}</span>
     )}
@@ -209,6 +224,7 @@ const ApplicationDetails = () => {
     formState: { errors },
   } = useForm<JobApplicationInput>({
     resolver: zodResolver(jobApplicationSchema),
+    mode: "onBlur",
     defaultValues: {
       isLinkedInConnection: false,
     },
@@ -220,12 +236,23 @@ const ApplicationDetails = () => {
   };
 
   return (
-    <Card className="max-w-2l p6 mx-auto">
-      <h2 className="mb-6 text-2xl font-bold">Add Application Details</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <JobDetailsSection register={register} errors={errors} />
-        <ApplicationSection register={register} errors={errors} />
-        <ContactSection register={register} errors={errors} />
+    <Card className="p6 mx-auto w-full max-w-4xl">
+      <h2 className="mb-6 text-center text-2xl font-bold">
+        Add Application Details
+      </h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="mx-20 space-y-6">
+        <CollapsibleSection
+          sectionTitle={sectionTitles.role}
+          rootProps={{ defaultOpen: true }}
+        >
+          <JobDetailsSection register={register} errors={errors} />
+        </CollapsibleSection>
+        <CollapsibleSection sectionTitle={sectionTitles.timeline}>
+          <ApplicationSection register={register} errors={errors} />
+        </CollapsibleSection>
+        <CollapsibleSection sectionTitle={sectionTitles.contact}>
+          <ContactSection register={register} errors={errors} />
+        </CollapsibleSection>
         <Button type="submit" className="w-full">
           Save Application Details
         </Button>

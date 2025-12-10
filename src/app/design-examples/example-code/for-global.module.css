@@ -1,0 +1,76 @@
+:global(:root) {
+  --bg-gradient: linear-gradient(160deg, #1b1740 0%, #0c3c47 100%);
+  --glass-bg: rgba(255, 255, 255, 0.14);
+  --glass-border: rgba(255, 255, 255, 0.4);
+  --glass-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+  --accent-primary: #5bf2d6;
+  --accent-secondary: #a96dff;
+  --error-color: #ff4f6d;
+  --radius-lg: 28px;
+  --radius-xl: 32px;
+  --transition-fast: 150ms ease-out;
+}
+
+/* Could use media queries
+
+@media (min-width: 768px) {
+  .mobile-screen {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .desktop-screen {
+    display: none;
+  }
+}
+
+*/
+
+/* CSS Blob Background shapes */
+.app-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgb(73, 38, 138) 0%, rgb(101, 196, 205) 100%);
+  z-index: -2;
+}
+
+/* Container for blobs */
+.app-bg-blobs {
+  position: absolute;
+  inset: 0;
+  filter: blur(80px);
+  opacity: 0.6;
+}
+
+/* Individual blobs */
+.app-bg-blob {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle at center, #5bf2d6 0%, transparent 70%);
+}
+
+.app-bg-blob--purple {
+  background: radial-gradient(circle at center, #a96dff 0%, transparent 70%);
+}
+
+.app-bg-blob--pink {
+  background: radial-gradient(circle at center, #ff6fb5 0%, transparent 70%);
+}
+
+/* Example placements */
+.app-bg-blob:nth-child(1) {
+  top: -15%;
+  left: -10%;
+}
+.app-bg-blob:nth-child(2) {
+  top: 30%;
+  right: -15%;
+}
+.app-bg-blob:nth-child(3) {
+  bottom: -20%;
+  left: 20%;
+}

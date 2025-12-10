@@ -147,6 +147,7 @@ const config = [
       complexity: "off",
       "sonarjs/cognitive-complexity": "off",
       "sonarjs/no-duplicate-string": "off",
+      "@typescript-eslint/no-unsafe-call": "off",
     },
   },
   {
