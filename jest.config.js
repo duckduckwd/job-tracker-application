@@ -18,6 +18,14 @@ const customJestConfig = {
     "/e2e/",
     "\\.spec\\.[jt]sx?$",
   ],
+  watchPathIgnorePatterns: [
+    "/node_modules/",
+    "/.next/",
+    "/coverage/",
+    "/docs/",
+    "/generated/",
+    "\\.git/",
+  ],
   collectCoverage: true,
   collectCoverageFrom: [
     "src/**/*.{js,jsx,ts,tsx}",

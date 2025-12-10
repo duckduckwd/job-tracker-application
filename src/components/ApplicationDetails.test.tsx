@@ -16,14 +16,29 @@ const createValidFormData = () => ({
   advertLink: "https://example.com/job",
 });
 
+// Helper to open collapsible sections
+const openSection = async (
+  user: ReturnType<typeof userEvent.setup>,
+  sectionTitle: string,
+) => {
+  const button = screen.getByRole("button", {
+    name: new RegExp(`Toggle.*${sectionTitle}`, "i"),
+  });
+  await user.click(button);
+};
+
 const fillRequiredFields = async (user: ReturnType<typeof userEvent.setup>) => {
   const data = createValidFormData();
-  await user.type(screen.getByLabelText(/^role$/i), data.role);
-  await user.type(screen.getByLabelText(/company/i), data.company);
-  await user.type(screen.getByLabelText(/role type/i), data.roleType);
-  await user.type(screen.getByLabelText(/location/i), data.location);
-  await user.type(screen.getByLabelText(/salary/i), data.salary);
-  await user.type(screen.getByLabelText(/advert link/i), data.advertLink);
+  // Role section is open by default
+  await user.type(screen.getByLabelText("Role"), data.role);
+  await user.type(screen.getByLabelText("Company"), data.company);
+  await user.type(screen.getByLabelText("Role Type"), data.roleType);
+  await user.type(screen.getByLabelText("Location"), data.location);
+  await user.type(screen.getByLabelText("Salary"), data.salary);
+
+  // Open timeline section for advert link
+  await openSection(user, "Timeline");
+  await user.type(screen.getByLabelText("Advert Link"), data.advertLink);
 };
 
 describe("ApplicationDetails", () => {
@@ -32,8 +47,9 @@ describe("ApplicationDetails", () => {
       const user = userEvent.setup();
       render(<ApplicationDetails />);
 
-      const roleInput = screen.getByLabelText(/^role$/i);
-      await user.click(roleInput);
+      const roleInput = screen.getByLabelText("Role");
+      await user.type(roleInput, "a");
+      await user.clear(roleInput);
       await user.tab();
 
       expect(await screen.findByText("Role is required")).toBeInTheDocument();
@@ -42,6 +58,9 @@ describe("ApplicationDetails", () => {
     it("should show error for invalid email format", async () => {
       const user = userEvent.setup();
       render(<ApplicationDetails />);
+
+      // Open contact section first
+      await openSection(user, "Contact");
 
       const emailInput = screen.getByLabelText(/contact email/i);
       await user.type(emailInput, "invalid-email");
@@ -56,7 +75,10 @@ describe("ApplicationDetails", () => {
       const user = userEvent.setup();
       render(<ApplicationDetails />);
 
-      const urlInput = screen.getByLabelText(/advert link/i);
+      // Open timeline section first
+      await openSection(user, "Timeline");
+
+      const urlInput = screen.getByLabelText("Advert Link");
       await user.type(urlInput, "not-a-url");
       await user.tab();
 
@@ -68,6 +90,9 @@ describe("ApplicationDetails", () => {
     it("should show error for invalid phone format", async () => {
       const user = userEvent.setup();
       render(<ApplicationDetails />);
+
+      // Open contact section first
+      await openSection(user, "Contact");
 
       const phoneInput = screen.getByLabelText(/contact phone/i);
       await user.type(phoneInput, "123#456@789");
@@ -82,8 +107,9 @@ describe("ApplicationDetails", () => {
       const user = userEvent.setup();
       render(<ApplicationDetails />);
 
-      const roleInput = screen.getByLabelText(/^role$/i);
-      await user.click(roleInput);
+      const roleInput = screen.getByLabelText("Role");
+      await user.type(roleInput, "a");
+      await user.clear(roleInput);
       await user.tab();
 
       expect(await screen.findByText("Role is required")).toBeInTheDocument();
@@ -102,9 +128,9 @@ describe("ApplicationDetails", () => {
       const user = userEvent.setup();
       render(<ApplicationDetails />);
 
-      const roleInput = screen.getByLabelText(/^role$/i);
-      await user.click(roleInput);
-      await user.tab();
+      const roleInput = screen.getByLabelText("Role");
+      await user.type(roleInput, "a");
+      await user.clear(roleInput);
 
       const submitButton = screen.getByRole("button", {
         name: /save application details/i,
@@ -150,6 +176,9 @@ describe("ApplicationDetails", () => {
       const user = userEvent.setup();
       render(<ApplicationDetails />);
 
+      // Open contact section first
+      await openSection(user, "Contact");
+
       const linkedInSwitch = screen.getByRole("switch", {
         name: /linkedin connection/i,
       });
@@ -194,7 +223,8 @@ describe("ApplicationDetails", () => {
       const { container } = render(<ApplicationDetails />);
 
       const roleInput = screen.getByLabelText(/^role$/i);
-      await user.click(roleInput);
+      await user.type(roleInput, "a");
+      await user.clear(roleInput);
       await user.tab();
 
       await waitFor(() => {
@@ -205,23 +235,58 @@ describe("ApplicationDetails", () => {
       expect(results).toHaveNoViolations();
     });
 
-    it("should have proper labels for all inputs", () => {
+    it("should have no violations with collapsible sections opened", async () => {
+      const user = userEvent.setup();
+      const { container } = render(<ApplicationDetails />);
+
+      // Open all sections
+      await openSection(user, "Timeline");
+      await openSection(user, "Contact");
+
+      const results = await axe(container);
+      expect(results).toHaveNoViolations();
+    });
+
+    it("should have accessible collapsible buttons", () => {
       render(<ApplicationDetails />);
 
-      expect(screen.getByLabelText(/^role$/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/company/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/role type/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/location/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/salary/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/advert link/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/date applied/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/cv used/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/response date/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/^status$/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/contact name/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/contact email/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/contact phone/i)).toBeInTheDocument();
-      expect(screen.getByLabelText(/linkedin connection/i)).toBeInTheDocument();
+      // Check that collapsible buttons have proper accessible names
+      expect(
+        screen.getByRole("button", { name: /toggle.*role details/i }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: /toggle.*timeline/i }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: /toggle.*contact details/i }),
+      ).toBeInTheDocument();
+    });
+
+    it("should have proper labels for all inputs when sections are opened", async () => {
+      const user = userEvent.setup();
+      render(<ApplicationDetails />);
+
+      // Role section is open by default
+      expect(screen.getByLabelText("Role")).toBeInTheDocument();
+      expect(screen.getByLabelText("Company")).toBeInTheDocument();
+      expect(screen.getByLabelText("Role Type")).toBeInTheDocument();
+      expect(screen.getByLabelText("Location")).toBeInTheDocument();
+      expect(screen.getByLabelText("Salary")).toBeInTheDocument();
+
+      // Open timeline section
+      await openSection(user, "Timeline");
+      expect(screen.getByLabelText("Date Applied")).toBeInTheDocument();
+      expect(screen.getByLabelText("Advert Link")).toBeInTheDocument();
+      expect(screen.getByLabelText("CV Used")).toBeInTheDocument();
+      expect(screen.getByLabelText("Response Date")).toBeInTheDocument();
+      expect(screen.getByLabelText("Status")).toBeInTheDocument();
+
+      // Open contact section
+      await openSection(user, "Contact");
+      expect(screen.getByLabelText("Contact Name")).toBeInTheDocument();
+      expect(screen.getByLabelText("Contact Email")).toBeInTheDocument();
+      expect(screen.getByLabelText("Contact Phone")).toBeInTheDocument();
+      expect(screen.getByLabelText("LinkedIn Connection")).toBeInTheDocument();
     });
 
     it("should have accessible submit button", () => {
@@ -239,7 +304,8 @@ describe("ApplicationDetails", () => {
       render(<ApplicationDetails />);
 
       const roleInput = screen.getByLabelText(/^role$/i);
-      await user.click(roleInput);
+      await user.type(roleInput, "a");
+      await user.clear(roleInput);
       await user.tab();
 
       const errorMessage = await screen.findByText("Role is required");
@@ -254,7 +320,8 @@ describe("ApplicationDetails", () => {
       const roleInput = screen.getByLabelText(/^role$/i);
       expect(roleInput).not.toHaveAttribute("aria-invalid");
 
-      await user.click(roleInput);
+      await user.type(roleInput, "a");
+      await user.clear(roleInput);
       await user.tab();
 
       await waitFor(() => {
@@ -269,7 +336,8 @@ describe("ApplicationDetails", () => {
       render(<ApplicationDetails />);
 
       const roleInput = screen.getByLabelText(/^role$/i);
-      await user.click(roleInput);
+      await user.type(roleInput, "a");
+      await user.clear(roleInput);
       await user.tab();
 
       await waitFor(() => {
@@ -290,16 +358,23 @@ describe("ApplicationDetails", () => {
       const user = userEvent.setup();
       render(<ApplicationDetails />);
 
+      // First tab goes to the collapsible button
       await user.tab();
-      expect(screen.getByLabelText(/^role$/i)).toHaveFocus();
+      expect(
+        screen.getByRole("button", { name: /toggle.*role details/i }),
+      ).toHaveFocus();
+
+      // Second tab goes to the first input
+      await user.tab();
+      expect(screen.getByLabelText("Role")).toHaveFocus();
 
       await user.keyboard("Software Engineer");
       await user.tab();
-      expect(screen.getByLabelText(/company/i)).toHaveFocus();
+      expect(screen.getByLabelText("Company")).toHaveFocus();
 
       await user.keyboard("Tech Corp");
       await user.tab();
-      expect(screen.getByLabelText(/role type/i)).toHaveFocus();
+      expect(screen.getByLabelText("Role Type")).toHaveFocus();
     });
 
     it("should submit form using Enter key", async () => {
@@ -322,12 +397,14 @@ describe("ApplicationDetails", () => {
       const user = userEvent.setup();
       render(<ApplicationDetails />);
 
-      await user.tab();
-      await user.tab();
-      expect(screen.getByLabelText(/company/i)).toHaveFocus();
+      // Tab to first input, then to second input
+      await user.tab(); // collapsible button
+      await user.tab(); // role input
+      await user.tab(); // company input
+      expect(screen.getByLabelText("Company")).toHaveFocus();
 
       await user.keyboard("{Shift>}{Tab}{/Shift}");
-      expect(screen.getByLabelText(/^role$/i)).toHaveFocus();
+      expect(screen.getByLabelText("Role")).toHaveFocus();
     });
   });
 
@@ -338,6 +415,9 @@ describe("ApplicationDetails", () => {
 
       const roleInput = screen.getByLabelText(/^role$/i);
       await user.type(roleInput, "Software Engineer");
+
+      // Open contact section
+      await openSection(user, "Contact");
 
       const emailInput = screen.getByLabelText(/contact email/i);
       await user.type(emailInput, "invalid-email");
@@ -360,6 +440,22 @@ describe("ApplicationDetails", () => {
       await user.type(roleInput, longString);
 
       expect(roleInput).toHaveValue(longString);
+    });
+
+    it("should handle collapsible section interactions", async () => {
+      const user = userEvent.setup();
+      render(<ApplicationDetails />);
+
+      // Timeline section should be closed initially
+      expect(screen.queryByLabelText("Advert Link")).not.toBeInTheDocument();
+
+      // Open timeline section
+      await openSection(user, "Timeline");
+      expect(screen.getByLabelText("Advert Link")).toBeInTheDocument();
+
+      // Close timeline section
+      await openSection(user, "Timeline");
+      expect(screen.queryByLabelText("Advert Link")).not.toBeInTheDocument();
     });
 
     it("should handle special characters in input", async () => {

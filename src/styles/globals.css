@@ -140,19 +140,27 @@
 
   [data-slot="input"] {
     background: rgba(255, 255, 255, 0.4) !important;
-    border-color: rgb(101, 196, 205) !important;
+    border-color: var(--primary) !important;
     border-width: 2px !important;
     margin-top: 5px !important;
-    color: white !important;
+    color: var(--primary) !important;
   }
 
   [data-slot="input"]::placeholder {
     color: rgba(255, 255, 255, 0.7) !important;
   }
 
+  [data-slot="input"][type="date"]::-webkit-input-placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  [data-slot="input"][type="date"]::-moz-placeholder {
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
   [data-slot="input"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
-    color: rgba(255, 255, 255, 0.7) !important;
+    /* color: rgba(255, 255, 255, 0.7) !important; */
   }
 
   h1,

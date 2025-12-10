@@ -1,20 +1,20 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import type { ComponentProps } from "react";
 import {
-  type FieldError,
   type FieldErrors,
   useForm,
   type UseFormRegister,
 } from "react-hook-form";
 
+import {
+  type FieldConfig,
+  FormSection,
+  type SwitchConfig,
+} from "~/components/forms/form-section";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { CollapsibleSection } from "~/components/ui/collapsible-section";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
-import { Switch } from "~/components/ui/switch";
 import {
   type JobApplicationInput,
   jobApplicationSchema,
@@ -27,204 +27,171 @@ const sectionTitles = {
   contact: "Contact Details (Name, Email, Phone, LinkedIn Connection)",
 };
 
-const FormInput = ({
-  label,
-  id,
-  register,
-  error,
-  ...props
-}: {
-  label: string;
-  id: keyof JobApplicationInput;
-  register: UseFormRegister<JobApplicationInput>;
-  error?: FieldError;
-} & Omit<ComponentProps<typeof Input>, "name">) => (
-  <div>
-    <Label htmlFor={id}>{label}</Label>
-    <Input
-      id={id}
-      {...register(id)}
-      aria-invalid={error ? "true" : undefined}
-      {...props}
-    />
-    {error && (
-      <span className="mt-1 text-sm text-red-500">{error.message}</span>
-    )}
-  </div>
-);
+const jobDetailsFields: FieldConfig[] = [
+  {
+    id: "roleTitle",
+    label: "Role",
+    type: "text",
+    placeholder: "Role (e.g. Senior Software Engineer)",
+    required: true,
+  },
+  {
+    id: "companyName",
+    label: "Company",
+    type: "text",
+    placeholder: "Company (e.g. Acme Corp)",
+    required: true,
+  },
+  {
+    id: "roleType",
+    label: "Role Type",
+    list: "roleTypes",
+    type: "text",
+    placeholder: "Role Type (e.g. Software Engineering Manager)",
+    required: true,
+  },
+  {
+    id: "location",
+    label: "Location",
+    type: "text",
+    list: "locations",
+    placeholder: "Location (e.g. Manchester, Remote, Hybrid)",
+    required: true,
+  },
+  {
+    id: "salary",
+    label: "Salary",
+    type: "text",
+    list: "salary",
+    placeholder: "Advertised salary (e.g. £75-85k)",
+  },
+];
 
-const FormSwitch = ({
-  label,
-  id,
-  register,
-}: {
-  label: string;
-  id: keyof JobApplicationInput;
-  register: UseFormRegister<JobApplicationInput>;
-}) => (
-  <div className="flex items-center space-x-2">
-    <Switch id={id} {...register(id)} />
-    <Label htmlFor={id}>{label}</Label>
-  </div>
-);
+const timelineFields: FieldConfig[] = [
+  {
+    id: "dateApplied",
+    label: "Date Applied",
+    type: "date",
+    placeholder: "Date Applied (dd/mm/yyyy)",
+    required: true,
+  },
+  {
+    id: "advertLink",
+    label: "Advert Link",
+    type: "url",
+    placeholder: "Advert Link (e.g. https://jobs.jobfinder.com/roleId",
+    required: true,
+  },
+  {
+    id: "cvUsed",
+    label: "CV Used",
+    type: "text",
+    placeholder: "CV used (e.g. john_doe_se_2025.pdf)",
+  },
+  {
+    id: "responseDate",
+    label: "Response Date",
+    type: "date",
+    placeholder: "Response Date (dd/mm/yyyy)",
+  },
+  {
+    id: "status",
+    label: "Status",
+    type: "text",
+    list: "status",
+    placeholder: "Status (e.g. Applied, Rejected)",
+    required: true,
+  },
+];
+
+const contactFields: (FieldConfig | SwitchConfig)[] = [
+  {
+    id: "contactName",
+    label: "Contact Name",
+    type: "text",
+    placeholder: "Company contact name (e.g. Jayne Doe)",
+  },
+  {
+    id: "contactEmail",
+    label: "Contact Email",
+    type: "email",
+    placeholder: "Company contact's email (jayne.dow@recruiters.com)",
+  },
+  {
+    id: "contactPhone",
+    label: "Contact Phone",
+    type: "text",
+    placeholder: "Contact's phone number (e.g. 07654321234)",
+  },
+  {
+    id: "isLinkedInConnection",
+    label: "LinkedIn Connection",
+    type: "switch",
+  },
+];
 
 const JobDetailsSection = ({
   register,
   errors,
+  dirtyFields,
 }: {
   register: UseFormRegister<JobApplicationInput>;
   errors: FieldErrors<JobApplicationInput>;
+  dirtyFields: Partial<Record<keyof JobApplicationInput, boolean>>;
 }) => (
-  <fieldset className="space-y-4">
-    <FormInput
-      register={register}
-      error={errors.roleTitle}
-      label="Role"
-      id="roleTitle"
-      type="text"
-      placeholder="Enter role name"
-      required
-    />
-    <FormInput
-      register={register}
-      error={errors.companyName}
-      label="Company"
-      id="companyName"
-      type="text"
-      placeholder="Enter company name"
-      required
-    />
-    <FormInput
-      register={register}
-      error={errors.roleType}
-      label="Role Type"
-      id="roleType"
-      type="text"
-      list="roleTypes"
-      placeholder="Select or enter role type..."
-      required
-    />
-    <FormInput
-      register={register}
-      error={errors.location}
-      label="Location"
-      id="location"
-      type="text"
-      list="locations"
-      placeholder="Select or enter location"
-      required
-    />
-    <FormInput
-      register={register}
-      error={errors.salary}
-      label="Salary"
-      id="salary"
-      type="text"
-      list="salary"
-      placeholder="Enter advertised salary"
-    />
-  </fieldset>
+  <FormSection
+    legend="Role Details"
+    fields={jobDetailsFields}
+    register={register}
+    errors={errors}
+    dirtyFields={dirtyFields}
+  />
 );
 
 const ApplicationSection = ({
   register,
   errors,
+  dirtyFields,
 }: {
   register: UseFormRegister<JobApplicationInput>;
   errors: FieldErrors<JobApplicationInput>;
+  dirtyFields: Partial<Record<keyof JobApplicationInput, boolean>>;
 }) => (
-  <fieldset className="space-y-4">
-    <FormInput
-      register={register}
-      error={errors.dateApplied}
-      label="Date Applied"
-      id="dateApplied"
-      type="date"
-    />
-    <FormInput
-      register={register}
-      error={errors.advertLink}
-      label="Advert Link"
-      id="advertLink"
-      type="url"
-      placeholder="Enter advert link"
-      required
-    />
-    <FormInput
-      register={register}
-      error={errors.cvUsed}
-      label="CV Used"
-      id="cvUsed"
-      type="text"
-      placeholder="Enter name of CV used"
-    />
-    <FormInput
-      register={register}
-      error={errors.responseDate}
-      label="Response Date"
-      id="responseDate"
-      type="date"
-    />
-    <FormInput
-      register={register}
-      error={errors.status}
-      label="Status"
-      id="status"
-      type="text"
-      list="status"
-      placeholder="Choose status"
-    />
-  </fieldset>
+  <FormSection
+    legend="Application Timeline"
+    fields={timelineFields}
+    register={register}
+    errors={errors}
+    dirtyFields={dirtyFields}
+  />
 );
 
 const ContactSection = ({
   register,
   errors,
+  dirtyFields,
 }: {
   register: UseFormRegister<JobApplicationInput>;
   errors: FieldErrors<JobApplicationInput>;
+  dirtyFields: Partial<Record<keyof JobApplicationInput, boolean>>;
 }) => (
-  <fieldset className="space-y-4">
-    <FormInput
-      register={register}
-      error={errors.contactName}
-      label="Contact Name"
-      id="contactName"
-      type="text"
-      placeholder="Enter company contact name"
-    />
-    <FormInput
-      register={register}
-      error={errors.contactEmail}
-      label="Contact Email"
-      id="contactEmail"
-      type="email"
-      placeholder="Enter company contact's email"
-    />
-    <FormInput
-      register={register}
-      error={errors.contactPhone}
-      label="Contact Phone"
-      id="contactPhone"
-      type="text"
-      placeholder="Enter company contact's phone number"
-    />
-    <FormSwitch
-      register={register}
-      label="LinkedIn Connection"
-      id="isLinkedInConnection"
-    />
-  </fieldset>
+  <FormSection
+    legend="Application Contacts"
+    fields={contactFields}
+    register={register}
+    errors={errors}
+    dirtyFields={dirtyFields}
+  />
 );
 
 const ApplicationDetails = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm<JobApplicationInput>({
     resolver: zodResolver(jobApplicationSchema),
-    mode: "onBlur",
+    mode: "onChange",
     defaultValues: {
       isLinkedInConnection: false,
     },
@@ -240,18 +207,34 @@ const ApplicationDetails = () => {
       <h2 className="mb-6 text-center text-2xl font-bold">
         Add Application Details
       </h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="mx-20 space-y-6">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mx-20 space-y-6"
+        noValidate
+      >
         <CollapsibleSection
           sectionTitle={sectionTitles.role}
           rootProps={{ defaultOpen: true }}
         >
-          <JobDetailsSection register={register} errors={errors} />
+          <JobDetailsSection
+            register={register}
+            errors={errors}
+            dirtyFields={dirtyFields}
+          />
         </CollapsibleSection>
         <CollapsibleSection sectionTitle={sectionTitles.timeline}>
-          <ApplicationSection register={register} errors={errors} />
+          <ApplicationSection
+            register={register}
+            errors={errors}
+            dirtyFields={dirtyFields}
+          />
         </CollapsibleSection>
         <CollapsibleSection sectionTitle={sectionTitles.contact}>
-          <ContactSection register={register} errors={errors} />
+          <ContactSection
+            register={register}
+            errors={errors}
+            dirtyFields={dirtyFields}
+          />
         </CollapsibleSection>
         <Button type="submit" className="w-full">
           Save Application Details

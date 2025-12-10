@@ -19,16 +19,24 @@ function CollapsibleSection({
 }) {
   const [open, setOpen] = useState(rootProps?.defaultOpen);
   return (
-    <Collapsible.Root {...rootProps} onOpenChange={setOpen}>
-      <div className="trigger">
+    <Collapsible.Root
+      {...rootProps}
+      onOpenChange={setOpen}
+      className="collapsible-section"
+    >
+      <Collapsible.Trigger
+        {...triggerProps}
+        className={`trigger ${open ? "trigger-open" : ""} `}
+        aria-label={`Toggle ${sectionTitle}`}
+      >
         <span className="text">{sectionTitle}</span>
-        <Collapsible.Trigger {...triggerProps} asChild>
-          <button className="icon-button">
-            {open ? <ChevronUp /> : <ChevronDown />}
-          </button>
-        </Collapsible.Trigger>
+        <span className="icon-button">
+          {open ? <ChevronUp /> : <ChevronDown />}
+        </span>
+      </Collapsible.Trigger>
+      <div className={`${open ? "content" : ""}`}>
+        <Collapsible.Content {...contentProps}>{children}</Collapsible.Content>
       </div>
-      <Collapsible.Content {...contentProps}>{children}</Collapsible.Content>
     </Collapsible.Root>
   );
 }
