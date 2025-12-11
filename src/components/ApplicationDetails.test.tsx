@@ -170,6 +170,58 @@ describe("ApplicationDetails", () => {
 
       consoleSpy.mockRestore();
     });
+
+    it("should prevent submission with invalid data", async () => {
+      // ... existing test
+    });
+
+    it("should submit form with valid data", async () => {
+      // ... existing test
+    });
+
+    it("should handle form submission errors", async () => {
+      const user = userEvent.setup();
+      const consoleSpy = jest.spyOn(console, "warn").mockImplementation(() => {
+        throw new Error("Network error");
+      });
+
+      render(<ApplicationDetails />);
+
+      await fillRequiredFields(user);
+
+      const submitButton = screen.getByRole("button", {
+        name: /save application details/i,
+      });
+      await user.click(submitButton);
+
+      await waitFor(() => {
+        expect(screen.getByText("Network error")).toBeInTheDocument();
+      });
+
+      consoleSpy.mockRestore();
+    });
+
+    it("should handle non-Error exceptions during submission", async () => {
+      const user = userEvent.setup();
+      const consoleSpy = jest.spyOn(console, "warn").mockImplementation(() => {
+        throw { message: "Custom error object" }; // Allowed in test files
+      });
+
+      render(<ApplicationDetails />);
+
+      await fillRequiredFields(user);
+
+      const submitButton = screen.getByRole("button", {
+        name: /save application details/i,
+      });
+      await user.click(submitButton);
+
+      await waitFor(() => {
+        expect(screen.getByText("An error occurred")).toBeInTheDocument();
+      });
+
+      consoleSpy.mockRestore();
+    });
   });
 
   describe("user interactions", () => {

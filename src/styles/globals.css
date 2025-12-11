@@ -140,7 +140,7 @@
 
   [data-slot="input"] {
     background: rgba(255, 255, 255, 0.4) !important;
-    border-color: var(--primary) !important;
+    border-color: var(--border) !important;
     border-width: 2px !important;
     margin-top: 5px !important;
     color: var(--primary) !important;

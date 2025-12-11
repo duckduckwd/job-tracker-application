@@ -148,6 +148,7 @@ const config = [
       "sonarjs/cognitive-complexity": "off",
       "sonarjs/no-duplicate-string": "off",
       "@typescript-eslint/no-unsafe-call": "off",
+      "@typescript-eslint/only-throw-error": "off",
     },
   },
   {
