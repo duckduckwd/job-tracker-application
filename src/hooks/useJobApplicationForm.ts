@@ -6,8 +6,10 @@ import {
   type JobApplicationInput,
   jobApplicationSchema,
 } from "~/schemas/jobApplication.schema";
+import type { UseJobApplicationFormReturn } from "~/types/hooks/job-application-form";
+import { sanitiseFormData } from "~/utils/sanitisation";
 
-export const useJobApplicationForm = () => {
+export const useJobApplicationForm = (): UseJobApplicationFormReturn => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -23,9 +25,10 @@ export const useJobApplicationForm = () => {
     setIsSubmitting(true);
     setSubmitError(null);
     try {
+      const sanitisedData = sanitiseFormData(data);
       // TODO: Replace with actual API call
       console.warn("Form submitted");
-      console.warn(data);
+      console.warn(sanitisedData);
     } catch (error) {
       setSubmitError(
         error instanceof Error ? error.message : "An error occurred",
