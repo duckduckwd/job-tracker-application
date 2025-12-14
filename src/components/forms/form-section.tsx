@@ -43,7 +43,6 @@ export const FormSection = ({
           key={field.id}
           register={register}
           error={errors[field.id]}
-          isDirty={dirtyFields[field.id]}
           {...field}
         />
       ),
