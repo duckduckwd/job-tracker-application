@@ -10,7 +10,7 @@ Docker deployment provides a consistent, portable environment for running the ap
 
 ```dockerfile
 # Multi-stage build for optimized production image
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -165,7 +165,7 @@ services:
 
 ```dockerfile
 # Dockerfile.dev
-FROM node:18-alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -538,7 +538,7 @@ data:
 
 ```dockerfile
 # Security best practices in Dockerfile
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
 # Create non-root user
 RUN addgroup --system --gid 1001 nodejs

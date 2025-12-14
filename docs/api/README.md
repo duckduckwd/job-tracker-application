@@ -2,7 +2,7 @@
 
 ## Overview
 
-Job Application Tracker REST API built with Next.js 14 App Router.
+Job Application Tracker REST API built with Next.js 15 App Router.
 
 ## Base URL
 
@@ -55,6 +55,20 @@ All protected endpoints require authentication via NextAuth.js session cookies.
 
 - [Authentication](./auth.md) - NextAuth.js endpoints
 
+### Analytics
+
+- [Analytics](./analytics.md) - `POST /api/analytics`
+
 ### Job Applications
 
-_Coming soon - will be documented as features are built_
+_Not yet implemented - form currently uses mock submission_
+
+**Planned endpoints:**
+
+- `POST /api/job-applications` - Create new job application
+- `GET /api/job-applications` - List user's job applications
+- `GET /api/job-applications/[id]` - Get specific job application
+- `PUT /api/job-applications/[id]` - Update job application
+- `DELETE /api/job-applications/[id]` - Delete job application
+
+_Will be documented as part of API integration implementation_

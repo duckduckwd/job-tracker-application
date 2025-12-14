@@ -211,6 +211,15 @@ describe("jobApplicationSchema", () => {
       );
     });
 
+    it("should pass when responseDate is after dateApplied", () => {
+      const data = createTestData({
+        dateApplied: "2024-01-15",
+        responseDate: "2024-01-20",
+      });
+      const result = jobApplicationSchema.safeParse(data);
+      expectValidationSuccess(result);
+    });
+
     const validDateScenarios = [
       {
         dateApplied: "2024-01-15",

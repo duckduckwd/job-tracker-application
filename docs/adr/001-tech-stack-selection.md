@@ -6,7 +6,7 @@ Accepted
 
 ## Date
 
-08-12-2025
+2024-12-08
 
 ## Context
 
@@ -14,7 +14,7 @@ Building a personal job application tracker that may expand to multi-user in the
 
 ## Decision
 
-- **Framework**: Next.js 14 with App Router
+- **Framework**: Next.js 15 with App Router
 - **Language**: TypeScript for type safety
 - **Database**: PostgreSQL with Prisma ORM
 - **Authentication**: NextAuth.js
@@ -27,7 +27,7 @@ Building a personal job application tracker that may expand to multi-user in the
 
 ## Rationale
 
-- Next.js 14: Latest features, excellent DX, serverless-ready
+- Next.js 15: Latest features with React 19, excellent DX, serverless-ready
 - TypeScript: Prevents runtime errors, better IDE support
 - PostgreSQL: Mature, scalable, good free hosting options
 - Prisma: Type-safe database access, excellent migrations

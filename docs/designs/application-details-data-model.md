@@ -14,13 +14,13 @@ This document defines the data structure for job application tracking based on t
 | Company    | `companyName` | String    | Yes      | Company name                                     | Free text                         |
 | Role Type  | `roleType`    | String    | Yes      | Type of role (e.g., Full-time, Contract, Remote) | Predefined list with custom entry |
 | Location   | `location`    | String    | Yes      | Job location                                     | Predefined list with custom entry |
-| Salary     | `salary`      | String    | Yes      | Advertised salary range or amount                | Free text                         |
+| Salary     | `salary`      | String    | No       | Advertised salary range or amount                | Free text                         |
 
 ### Application Section
 
 | Field Name    | Field ID       | Data Type | Required | Description                        | Constraints          |
 | ------------- | -------------- | --------- | -------- | ---------------------------------- | -------------------- |
-| Date Applied  | `dateApplied`  | Date      | No       | Date the application was submitted | ISO 8601 date format |
+| Date Applied  | `dateApplied`  | Date      | Yes      | Date the application was submitted | ISO 8601 date format |
 | Advert Link   | `advertLink`   | URL       | Yes      | Link to job advertisement          | Valid URL format     |
 | CV Used       | `cvUsed`       | String    | No       | Name/version of CV submitted       | Free text            |
 | Response Date | `responseDate` | Date      | No       | Date of employer response          | ISO 8601 date format |
@@ -28,11 +28,12 @@ This document defines the data structure for job application tracking based on t
 
 ### Contact Section
 
-| Field Name    | Field ID       | Data Type | Required | Description                       | Constraints        |
-| ------------- | -------------- | --------- | -------- | --------------------------------- | ------------------ |
-| Contact Name  | `contactName`  | String    | No       | Name of company contact/recruiter | Free text          |
-| Contact Email | `contactEmail` | Email     | No       | Email address of contact          | Valid email format |
-| Contact Phone | `contactPhone` | String    | No       | Phone number of contact           | Free text          |
+| Field Name          | Field ID               | Data Type | Required | Description                              | Constraints        |
+| ------------------- | ---------------------- | --------- | -------- | ---------------------------------------- | ------------------ |
+| Contact Name        | `contactName`          | String    | No       | Name of company contact/recruiter        | Free text          |
+| Contact Email       | `contactEmail`         | Email     | No       | Email address of contact                 | Valid email format |
+| Contact Phone       | `contactPhone`         | String    | No       | Phone number of contact                  | Free text          |
+| LinkedIn Connection | `isLinkedInConnection` | Boolean   | No       | Whether contact is a LinkedIn connection | Boolean value      |
 
 ### System Fields
 
@@ -80,7 +81,7 @@ This document defines the data structure for job application tracking based on t
 
 ## Data Validation Rules
 
-1. **Required Fields**: roleTitle, companyName, roleType, location, salary, advertLink
+1. **Required Fields**: roleTitle, companyName, roleType, location, dateApplied, advertLink, status
 2. **URL Validation**: advertLink must be a valid URL
 3. **Email Validation**: contactEmail must be a valid email format
 4. **Date Validation**: dateApplied and responseDate must be valid dates
@@ -102,19 +103,20 @@ interface JobApplication {
   companyName: string;
   roleType: string;
   location: string;
-  salary: string;
+  salary?: string;
 
   // Application Details
-  dateApplied?: Date;
+  dateApplied: Date;
   advertLink: string;
   cvUsed?: string;
   responseDate?: Date;
-  status?: string;
+  status: string;
 
   // Contact Information
   contactName?: string;
   contactEmail?: string;
   contactPhone?: string;
+  isLinkedInConnection?: boolean;
 }
 ```
 
@@ -131,17 +133,18 @@ model JobApplication {
   companyName   String
   roleType      String
   location      String
-  salary        String
+  salary        String?
 
-  dateApplied   DateTime?
+  dateApplied   DateTime
   advertLink    String
   cvUsed        String?
   responseDate  DateTime?
-  status        String?
+  status        String
 
   contactName   String?
   contactEmail  String?
   contactPhone  String?
+  isLinkedInConnection Boolean?
 
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 

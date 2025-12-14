@@ -26,6 +26,7 @@ Configure explicit pooling if you experience:
 
 ```typescript
 // Current setup in src/server/db.ts works perfectly
+// Note: Uses custom output location (generated/prisma)
 const prisma = new PrismaClient();
 ```
 

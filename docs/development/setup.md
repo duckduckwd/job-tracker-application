@@ -4,7 +4,7 @@
 
 ### Required Software
 
-- **Node.js**: v18.17.0 or higher
+- **Node.js**: v20.0.0 or higher
 - **npm**: v9.0.0 or higher (comes with Node.js)
 - **Docker**: Latest version (for PostgreSQL database)
 - **Git**: Latest version

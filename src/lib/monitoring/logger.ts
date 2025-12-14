@@ -27,17 +27,24 @@ export class Logger {
       console.log(`${colors[level]}[${level.toUpperCase()}]\x1b[0m`, logData);
     }
 
-    // Send to Sentry
-    Sentry.addBreadcrumb({
-      category: "app",
-      message,
-      level: level === "error" ? "error" : "info",
-      data: logData,
-    });
+    // Send to Sentry with error handling
+    try {
+      Sentry.addBreadcrumb({
+        category: "app",
+        message,
+        level: level === "error" ? "error" : "info",
+        data: logData,
+      });
 
-    // Capture errors in Sentry
-    if (level === "error") {
-      Sentry.captureMessage(message, "error");
+      // Capture errors in Sentry
+      if (level === "error") {
+        Sentry.captureMessage(message, "error");
+      }
+    } catch (sentryError) {
+      // Fail silently if Sentry is unavailable
+      if (process.env.NODE_ENV === "development") {
+        console.warn("Sentry logging failed:", sentryError);
+      }
     }
   }
 

@@ -29,7 +29,7 @@ on:
 
 1. **Environment Setup**
    - Ubuntu latest runner
-   - Node.js 18 with npm caching
+   - Node.js 20 with npm caching
    - PostgreSQL 15 test database
 
 2. **Database Setup**

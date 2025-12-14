@@ -1,10 +1,8 @@
 import type { AnalyticsEvent } from "~/types";
 
 class Analytics {
-  private readonly isEnabled: boolean;
-
-  constructor() {
-    this.isEnabled = process.env.NODE_ENV === "production";
+  private get isEnabled(): boolean {
+    return process.env.NODE_ENV === "production";
   }
 
   track(event: AnalyticsEvent) {
