@@ -25,13 +25,13 @@ export const FormSection = ({
   fields,
   register,
   errors,
-  dirtyFields,
+  // dirtyFields,
 }: {
   legend: string;
   fields: (FieldConfig | SwitchConfig)[];
   register: UseFormRegister<JobApplicationInput>;
   errors: FieldErrors<JobApplicationInput>;
-  dirtyFields: Partial<Record<keyof JobApplicationInput, boolean>>;
+  // dirtyFields: Partial<Record<keyof JobApplicationInput, boolean>>;
 }) => (
   <fieldset className="space-y-4">
     <legend className="sr-only">{legend}</legend>

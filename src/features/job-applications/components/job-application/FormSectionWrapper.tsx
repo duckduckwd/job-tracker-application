@@ -18,7 +18,7 @@ export const FormSectionWrapper = memo(
   }) => {
     const {
       register,
-      formState: { errors, dirtyFields },
+      formState: { errors /*dirtyFields*/ },
     } = useFormContext<JobApplicationInput>();
     return (
       <FormSection
@@ -26,7 +26,7 @@ export const FormSectionWrapper = memo(
         fields={fields}
         register={register}
         errors={errors}
-        dirtyFields={dirtyFields}
+        // dirtyFields={dirtyFields}
       />
     );
   },
