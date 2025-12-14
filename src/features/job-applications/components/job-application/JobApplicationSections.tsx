@@ -1,5 +1,6 @@
 import { memo } from "react";
 
+import { CollapsibleSection } from "~/components/ui/collapsible-section";
 import { sectionTitles } from "~/config/forms/form-sections.config";
 import {
   contactFields,
@@ -7,7 +8,6 @@ import {
   timelineFields,
 } from "~/config/forms/job-application-fields.config";
 
-import { CollapsibleSection } from "../ui/collapsible-section";
 import { FormSectionWrapper } from "./FormSectionWrapper";
 
 export const JobApplicationSections = memo(() => (

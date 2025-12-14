@@ -10,7 +10,8 @@ export const FormInput = ({
   id,
   register,
   error,
-  isDirty,
+  // isDirty,
+  placeholder,
   ...props
 }: {
   label: string;
@@ -22,17 +23,16 @@ export const FormInput = ({
   const errorId = `${id}-error`;
   return (
     <div>
-      <Label htmlFor={id} className="sr-only">
-        {label}
-      </Label>
+      <Label htmlFor={id as string}>{label}</Label>
       <Input
-        id={id}
+        id={id as string}
         {...register(id)}
-        aria-invalid={error && isDirty ? "true" : undefined}
-        aria-describedby={error && isDirty ? errorId : undefined}
+        placeholder={placeholder ?? label}
+        aria-invalid={error ? "true" : undefined}
+        aria-describedby={error ? errorId : undefined}
         {...props}
       />
-      {error && isDirty && (
+      {error && (
         <span id={errorId} className="mt-1 text-sm text-red-500">
           {error.message}
         </span>

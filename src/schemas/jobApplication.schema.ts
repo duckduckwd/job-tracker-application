@@ -6,11 +6,8 @@ export const jobApplicationSchema = z
     companyName: z.string().min(1, "Company name is required"),
     roleType: z.string().min(1, "Role type is required"),
     location: z.string().min(1, "Location is required"),
-    salary: z
-      .string()
-      .min(1, "Salary is required")
-      .refine((val) => val.trim().length > 0, "Salary cannot be empty"),
-    dateApplied: z.string().date().optional().or(z.literal("")),
+    salary: z.string().optional().or(z.literal("")),
+    dateApplied: z.string().min(1, "Date applied is required"),
     advertLink: z
       .string()
       .url("Must be a valid URL")
@@ -23,7 +20,7 @@ export const jobApplicationSchema = z
       ),
     cvUsed: z.string().optional(),
     responseDate: z.string().date().optional().or(z.literal("")),
-    status: z.string().optional(),
+    status: z.string().min(1, "Status is required"),
     contactName: z.string().optional(),
     contactEmail: z
       .string()

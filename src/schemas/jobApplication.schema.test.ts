@@ -55,16 +55,15 @@ describe("jobApplicationSchema", () => {
     });
 
     it("should pass validation with only required fields", () => {
-      const minimalData = createTestData({
-        dateApplied: undefined,
-        responseDate: undefined,
-        cvUsed: undefined,
-        status: undefined,
-        contactName: undefined,
-        contactEmail: undefined,
-        contactPhone: undefined,
-        isLinkedInConnection: undefined,
-      });
+      const minimalData = {
+        roleTitle: "Software Engineer",
+        companyName: "Tech Corp",
+        roleType: "Full-time",
+        location: "London",
+        dateApplied: "2024-01-15",
+        advertLink: "https://example.com/job",
+        status: "Applied",
+      };
       const result = jobApplicationSchema.safeParse(minimalData);
       expectValidationSuccess(result);
     });
@@ -76,8 +75,9 @@ describe("jobApplicationSchema", () => {
       { field: "companyName", message: "Company name is required" },
       { field: "roleType", message: "Role type is required" },
       { field: "location", message: "Location is required" },
-      { field: "salary", message: "Salary is required" },
+      { field: "dateApplied", message: "Date applied is required" },
       { field: "advertLink", message: "Must be a valid URL" },
+      { field: "status", message: "Status is required" },
     ] as const;
 
     test.each(requiredFields)(
@@ -88,13 +88,19 @@ describe("jobApplicationSchema", () => {
         expectValidationError(result, message);
       },
     );
+
+    it("should pass when optional salary field is empty", () => {
+      const data = createTestData({ salary: "" });
+      const result = jobApplicationSchema.safeParse(data);
+      expectValidationSuccess(result);
+    });
   });
 
   describe("salary validation", () => {
-    it("should fail when salary is only whitespace", () => {
-      const data = createTestData({ salary: "   " });
+    it("should pass when salary is empty (optional field)", () => {
+      const data = createTestData({ salary: "" });
       const result = jobApplicationSchema.safeParse(data);
-      expectValidationError(result, "Salary cannot be empty");
+      expectValidationSuccess(result);
     });
   });
 
@@ -216,13 +222,7 @@ describe("jobApplicationSchema", () => {
         responseDate: "2024-01-20",
         desc: "response after applied",
       },
-      { dateApplied: "", responseDate: "", desc: "both empty" },
       { dateApplied: "2024-01-15", responseDate: "", desc: "only dateApplied" },
-      {
-        dateApplied: "",
-        responseDate: "2024-01-20",
-        desc: "only responseDate",
-      },
     ];
 
     test.each(validDateScenarios)(
