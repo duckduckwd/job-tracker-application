@@ -18,7 +18,6 @@ export const FormInput = ({
   id: keyof JobApplicationInput;
   register: UseFormRegister<JobApplicationInput>;
   error?: FieldError;
-  isDirty?: boolean;
 } & Omit<ComponentProps<typeof Input>, "name">) => {
   const errorId = `${id}-error`;
   return (
