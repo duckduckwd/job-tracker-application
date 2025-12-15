@@ -15,7 +15,7 @@ export interface FormSectionWrapperProps {
 }
 
 export const FormSectionWrapper = memo(
-  ({ legend, fields, sectionId }: FormSectionWrapperProps) => {
+  ({ legend, fields }: FormSectionWrapperProps) => {
     const {
       register,
       formState: { errors },
@@ -27,7 +27,6 @@ export const FormSectionWrapper = memo(
         legend={legend}
         fields={fields}
         register={register}
-        sectionId={sectionId}
       />
     );
   },

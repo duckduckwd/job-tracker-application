@@ -10,6 +10,7 @@ describe("CollapsibleSection Component", () => {
     sectionTitle: "Test Section",
     children: <div>Section content</div>,
     openItem: false,
+    sectionHasErrors: false,
   };
 
   const renderWithAccordion = (props = defaultProps, accordionProps = {}) => {
@@ -190,6 +191,7 @@ describe("CollapsibleSection Component", () => {
           sectionTitle: "Complex Section",
           children: complexChildren,
           openItem: true,
+          sectionHasErrors: false,
         },
         { defaultValue: "Complex Section" },
       );
@@ -220,6 +222,7 @@ describe("CollapsibleSection Component", () => {
             sectionTitle="New Title"
             children={defaultProps.children}
             openItem={false}
+            sectionHasErrors={false}
           />
         </Accordion>,
       );
@@ -420,6 +423,7 @@ describe("CollapsibleSection Component", () => {
         sectionTitle: "",
         children: defaultProps.children,
         openItem: false,
+        sectionHasErrors: false,
       });
 
       const trigger = screen.getByRole("button");
@@ -432,6 +436,7 @@ describe("CollapsibleSection Component", () => {
         sectionTitle: longTitle,
         children: defaultProps.children,
         openItem: false,
+        sectionHasErrors: false,
       });
 
       expect(screen.getByText(longTitle)).toBeInTheDocument();
@@ -441,6 +446,7 @@ describe("CollapsibleSection Component", () => {
       renderWithAccordion({
         sectionTitle: "Test",
         openItem: false,
+        sectionHasErrors: false,
       } as any);
 
       expect(screen.getByText("Test")).toBeInTheDocument();
@@ -451,6 +457,7 @@ describe("CollapsibleSection Component", () => {
         sectionTitle: "Test",
         children: <div />,
         openItem: false,
+        sectionHasErrors: false,
       });
 
       expect(screen.getByText("Test")).toBeInTheDocument();
@@ -487,6 +494,7 @@ describe("CollapsibleSection Component", () => {
         sectionTitle: "Complex Section",
         children: complexChildren,
         openItem: false,
+        sectionHasErrors: false,
       });
 
       const trigger = screen.getByRole("button");

@@ -25,7 +25,6 @@ interface FormSectionProps {
   legend: string;
   fields: (FieldConfig | SwitchConfig)[];
   register: UseFormRegister<JobApplicationInput>;
-  sectionId: string;
 }
 
 export const FormSection = ({
@@ -33,7 +32,6 @@ export const FormSection = ({
   legend,
   fields,
   register,
-  sectionId,
 }: FormSectionProps) => {
   return (
     <fieldset className="space-y-4">
