@@ -84,8 +84,8 @@ describe("Accordion Component", () => {
 
       const triggers = screen.getAllByRole("button");
 
-      await user.click(triggers[0]);
-      await user.click(triggers[1]);
+      await user.click(triggers[0]!);
+      await user.click(triggers[1]!);
 
       expect(triggers[0]).toHaveAttribute("data-state", "open");
       expect(triggers[1]).toHaveAttribute("data-state", "open");
@@ -262,7 +262,7 @@ describe("Accordion Component", () => {
       );
 
       const triggers = screen.getAllByRole("button");
-      await user.click(triggers[0]);
+      await user.click(triggers[0]!);
 
       expect(onValueChange).toHaveBeenCalledWith(["item-1"]);
     });

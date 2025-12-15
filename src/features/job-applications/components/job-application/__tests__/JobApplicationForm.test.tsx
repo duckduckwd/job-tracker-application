@@ -10,10 +10,10 @@ jest.mock("../JobApplicationSections", () => ({
 }));
 
 const TestWrapper = ({
-  onSubmit = jest.fn(),
+  onSubmit = jest.fn().mockResolvedValue(undefined),
   isSubmitting = false,
 }: {
-  onSubmit?: () => void;
+  onSubmit?: () => Promise<void>;
   isSubmitting?: boolean;
 }) => {
   const methods = useForm();

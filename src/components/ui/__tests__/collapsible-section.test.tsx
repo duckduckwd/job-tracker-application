@@ -438,7 +438,6 @@ describe("CollapsibleSection Component", () => {
     });
 
     it("handles missing children gracefully", () => {
-      // @ts-expect-error - Testing missing required prop
       renderWithAccordion({
         sectionTitle: "Test",
         openItem: false,
