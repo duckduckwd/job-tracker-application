@@ -32,8 +32,11 @@ export const FormInput = ({
         {...props}
       />
       {error && (
-        <span id={errorId} className="mt-1 text-sm text-red-500">
-          {error.message}
+        <span
+          id={errorId}
+          className="bg-foreground/50 text-destructive border-destructive mt-1 rounded border px-4 text-sm"
+        >
+          *&nbsp;{error.message}
         </span>
       )}
     </div>

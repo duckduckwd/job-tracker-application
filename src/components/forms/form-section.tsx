@@ -20,32 +20,36 @@ export type SwitchConfig = {
   type: "switch";
 };
 
-export const FormSection = ({
-  legend,
-  fields,
-  register,
-  errors,
-  // dirtyFields,
-}: {
+interface FormSectionProps {
+  errors: FieldErrors<JobApplicationInput>;
   legend: string;
   fields: (FieldConfig | SwitchConfig)[];
   register: UseFormRegister<JobApplicationInput>;
-  errors: FieldErrors<JobApplicationInput>;
-  // dirtyFields: Partial<Record<keyof JobApplicationInput, boolean>>;
-}) => (
-  <fieldset className="space-y-4">
-    <legend className="sr-only">{legend}</legend>
-    {fields.map((field) =>
-      field.type === "switch" ? (
-        <FormSwitch key={field.id} register={register} {...field} />
-      ) : (
-        <FormInput
-          key={field.id}
-          register={register}
-          error={errors[field.id]}
-          {...field}
-        />
-      ),
-    )}
-  </fieldset>
-);
+  sectionId: string;
+}
+
+export const FormSection = ({
+  errors,
+  legend,
+  fields,
+  register,
+  sectionId,
+}: FormSectionProps) => {
+  return (
+    <fieldset className="space-y-4">
+      <legend className="sr-only">{legend}</legend>
+      {fields.map((field) =>
+        field.type === "switch" ? (
+          <FormSwitch key={field.id} register={register} {...field} />
+        ) : (
+          <FormInput
+            key={field.id}
+            register={register}
+            error={errors[field.id]}
+            {...field}
+          />
+        ),
+      )}
+    </fieldset>
+  );
+};

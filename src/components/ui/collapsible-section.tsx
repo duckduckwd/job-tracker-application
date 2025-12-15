@@ -9,12 +9,13 @@ import { ChevronRight, ChevronUp } from "lucide-react";
 import { cn } from "~/lib/utils";
 
 const triggerVariants = cva(
-  "flex w-full items-center justify-between cursor-pointer transition-all duration-200 px-4 py-3 bg-white/5",
+  "flex w-full items-center justify-between cursor-pointer transition-all duration-200 px-4 py-3 bg-white/5 rounded border border-transparent",
   {
     variants: {
       state: {
         closed: "hover:bg-white/10",
         open: "bg-white/10",
+        errors: "bg-foreground/50",
       },
     },
     defaultVariants: {
@@ -30,6 +31,7 @@ const iconButtonVariants = cva(
       state: {
         closed: "hover:bg-secondary hover:scale-105",
         open: "bg-secondary",
+        errors: "bg-destructive text-destructive-foreground",
       },
     },
     defaultVariants: {
@@ -38,29 +40,39 @@ const iconButtonVariants = cva(
   },
 );
 
+interface CollapsibleSectionProps {
+  children: React.ReactElement;
+  sectionTitle: string;
+  openItem: boolean;
+  sectionHasErrors: boolean;
+}
+
 function CollapsibleSection({
   children,
   sectionTitle,
   openItem,
-}: {
-  children: React.ReactElement;
-  sectionTitle: string;
-  openItem: boolean;
-}) {
+  sectionHasErrors,
+}: CollapsibleSectionProps) {
+  const getState = () => {
+    if (sectionHasErrors) return "errors";
+    return openItem ? "open" : "closed";
+  };
+
   return (
     <AccordionItem value={sectionTitle}>
       <AccordionTrigger
-        className={cn(triggerVariants({ state: openItem ? "open" : "closed" }))}
+        className={cn(triggerVariants({ state: getState() }))}
         aria-label={`Toggle ${sectionTitle}`}
       >
-        <span className="text-foreground text-sm font-medium">
-          {sectionTitle}
-        </span>
         <span
           className={cn(
-            iconButtonVariants({ state: openItem ? "open" : "closed" }),
+            "text-sm font-medium",
+            sectionHasErrors ? "text-destructive" : "text-foreground",
           )}
         >
+          {sectionTitle}
+        </span>
+        <span className={cn(iconButtonVariants({ state: getState() }))}>
           {openItem ? <ChevronUp size={16} /> : <ChevronRight size={16} />}
         </span>
       </AccordionTrigger>

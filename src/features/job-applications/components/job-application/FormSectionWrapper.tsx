@@ -8,25 +8,26 @@ import {
 } from "~/components/forms/form-section";
 import { type JobApplicationInput } from "~/schemas/jobApplication.schema";
 
+export interface FormSectionWrapperProps {
+  legend: string;
+  sectionId: string;
+  fields: (FieldConfig | SwitchConfig)[];
+}
+
 export const FormSectionWrapper = memo(
-  ({
-    legend,
-    fields,
-  }: {
-    legend: string;
-    fields: (FieldConfig | SwitchConfig)[];
-  }) => {
+  ({ legend, fields, sectionId }: FormSectionWrapperProps) => {
     const {
       register,
-      formState: { errors /*dirtyFields*/ },
+      formState: { errors },
     } = useFormContext<JobApplicationInput>();
+
     return (
       <FormSection
+        errors={errors}
         legend={legend}
         fields={fields}
         register={register}
-        errors={errors}
-        // dirtyFields={dirtyFields}
+        sectionId={sectionId}
       />
     );
   },

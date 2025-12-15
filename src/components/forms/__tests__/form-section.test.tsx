@@ -81,7 +81,7 @@ describe("FormSection", () => {
       />,
     );
 
-    expect(screen.getByText("Company name is required")).toBeInTheDocument();
+    expect(screen.getByText("* Company name is required")).toBeInTheDocument();
   });
 
   it("handles multiple input fields with different configurations", () => {
@@ -156,7 +156,7 @@ describe("FormSection", () => {
       <TestWrapper legend="Job Details" fields={fields} errors={errors} />,
     );
 
-    expect(screen.getByText("Company name is required")).toBeInTheDocument();
+    expect(screen.getByText("* Company name is required")).toBeInTheDocument();
     // Note: Switch components typically don't show error messages in the same way
   });
 

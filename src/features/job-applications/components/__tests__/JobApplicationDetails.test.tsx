@@ -91,7 +91,7 @@ describe("JobApplicationDetails", () => {
       await user.tab(); // This should trigger blur validation
 
       await waitFor(() => {
-        expect(screen.getByText("Role is required")).toBeInTheDocument();
+        expect(screen.getByText("* Role is required")).toBeInTheDocument();
       });
     });
 
@@ -107,7 +107,7 @@ describe("JobApplicationDetails", () => {
       await user.tab();
 
       expect(
-        await screen.findByText("Must be a valid email"),
+        await screen.findByText("* Must be a valid email"),
       ).toBeInTheDocument();
     });
 
@@ -123,7 +123,7 @@ describe("JobApplicationDetails", () => {
       await user.tab();
 
       expect(
-        await screen.findByText("Must be a valid URL"),
+        await screen.findByText("* Must be a valid URL"),
       ).toBeInTheDocument();
     });
 
@@ -139,7 +139,7 @@ describe("JobApplicationDetails", () => {
       await user.tab();
 
       expect(
-        await screen.findByText("Invalid phone number format"),
+        await screen.findByText("* Invalid phone number format"),
       ).toBeInTheDocument();
     });
 
@@ -154,7 +154,7 @@ describe("JobApplicationDetails", () => {
       await user.tab();
 
       await waitFor(() => {
-        expect(screen.getByText("Role is required")).toBeInTheDocument();
+        expect(screen.getByText("* Role is required")).toBeInTheDocument();
       });
 
       await user.click(roleInput);
@@ -162,7 +162,9 @@ describe("JobApplicationDetails", () => {
       await user.tab();
 
       await waitFor(() => {
-        expect(screen.queryByText("Role is required")).not.toBeInTheDocument();
+        expect(
+          screen.queryByText("* Role is required"),
+        ).not.toBeInTheDocument();
       });
     });
   });
@@ -192,7 +194,7 @@ describe("JobApplicationDetails", () => {
       });
       await user.click(submitButton);
 
-      expect(await screen.findByText("Role is required")).toBeInTheDocument();
+      expect(await screen.findByText("* Role is required")).toBeInTheDocument();
     });
 
     it("should call submitForm when valid form is submitted", async () => {
@@ -295,7 +297,7 @@ describe("JobApplicationDetails", () => {
       await user.tab();
 
       await waitFor(() => {
-        expect(screen.getByText("Role is required")).toBeInTheDocument();
+        expect(screen.getByText("* Role is required")).toBeInTheDocument();
       });
 
       const results = await axe(container);
@@ -377,9 +379,9 @@ describe("JobApplicationDetails", () => {
       await user.tab();
 
       await waitFor(() => {
-        const errorMessage = screen.getByText("Role is required");
+        const errorMessage = screen.getByText("* Role is required");
         expect(errorMessage).toBeInTheDocument();
-        expect(errorMessage).toHaveClass("text-red-500");
+        expect(errorMessage).toHaveClass("text-destructive");
         expect(roleInput).toHaveAttribute(
           "aria-describedby",
           "roleTitle-error",
@@ -399,7 +401,7 @@ describe("JobApplicationDetails", () => {
       await user.tab();
 
       await waitFor(() => {
-        expect(screen.getByText("Role is required")).toBeInTheDocument();
+        expect(screen.getByText("* Role is required")).toBeInTheDocument();
       });
 
       expect(roleInput).toHaveAttribute("aria-invalid", "true");
@@ -515,7 +517,7 @@ describe("JobApplicationDetails", () => {
       await user.tab(); // Trigger blur validation
 
       await waitFor(() => {
-        expect(screen.getByText("Must be a valid email")).toBeInTheDocument();
+        expect(screen.getByText("* Must be a valid email")).toBeInTheDocument();
       });
 
       expect(roleInput).toHaveValue("Software Engineer");
@@ -581,7 +583,7 @@ describe("JobApplicationDetails", () => {
       await user.tab();
 
       await waitFor(() => {
-        expect(screen.getByText("Role is required")).toBeInTheDocument();
+        expect(screen.getByText("* Role is required")).toBeInTheDocument();
       });
     });
 

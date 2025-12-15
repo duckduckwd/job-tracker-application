@@ -33,9 +33,9 @@ describe("FormInput", () => {
     const error = { message: "This field is required" };
     render(<TestWrapper {...defaultProps} error={error} />);
 
-    expect(screen.getByText("This field is required")).toBeInTheDocument();
-    expect(screen.getByText("This field is required")).toHaveClass(
-      "text-red-500",
+    expect(screen.getByText("* This field is required")).toBeInTheDocument();
+    expect(screen.getByText("* This field is required")).toHaveClass(
+      "text-destructive",
     );
   });
 
@@ -54,7 +54,7 @@ describe("FormInput", () => {
     const input = screen.getByLabelText("Test Label");
     expect(input).toHaveAttribute("aria-describedby", "testField-error");
 
-    const errorElement = screen.getByText("Invalid input");
+    const errorElement = screen.getByText("* Invalid input");
     expect(errorElement).toHaveAttribute("id", "testField-error");
   });
 
@@ -108,7 +108,7 @@ describe("FormInput", () => {
     };
     render(<TestWrapper {...defaultProps} error={error} />);
 
-    expect(screen.getByText("Complex error")).toBeInTheDocument();
+    expect(screen.getByText("* Complex error")).toBeInTheDocument();
   });
 
   it("renders without error when error is undefined", () => {
