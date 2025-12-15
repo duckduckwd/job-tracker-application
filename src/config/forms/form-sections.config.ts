@@ -4,3 +4,9 @@ export const sectionTitles = {
     "Timeline (Date Applied, Advert Link, CV Used, Response Date, Status)",
   contact: "Contact Details (Name, Email, Phone, LinkedIn Connection)",
 };
+
+export const sectionLegends = {
+  role: "Role Details",
+  timeline: "Timeline",
+  contact: "Contact Details",
+};

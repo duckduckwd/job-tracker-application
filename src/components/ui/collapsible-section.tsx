@@ -1,7 +1,10 @@
-import * as Collapsible from "@radix-ui/react-collapsible";
+import {
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@radix-ui/react-accordion";
 import { cva } from "class-variance-authority";
 import { ChevronRight, ChevronUp } from "lucide-react";
-import { useState } from "react";
 
 import { cn } from "~/lib/utils";
 
@@ -38,29 +41,16 @@ const iconButtonVariants = cva(
 function CollapsibleSection({
   children,
   sectionTitle,
-  rootProps,
-  triggerProps,
-  contentProps,
+  openItem,
 }: {
   children: React.ReactElement;
   sectionTitle: string;
-  rootProps?: React.ComponentProps<typeof Collapsible.Root>;
-  triggerProps?: React.ComponentProps<typeof Collapsible.Trigger>;
-  contentProps?: React.ComponentProps<typeof Collapsible.Content>;
+  openItem: boolean;
 }) {
-  const [open, setOpen] = useState(rootProps?.defaultOpen);
   return (
-    <Collapsible.Root
-      {...rootProps}
-      onOpenChange={setOpen}
-      className="border-border rounded-md border bg-white/5"
-    >
-      <Collapsible.Trigger
-        {...triggerProps}
-        className={cn(
-          triggerVariants({ state: open ? "open" : "closed" }),
-          triggerProps?.className,
-        )}
+    <AccordionItem value={sectionTitle}>
+      <AccordionTrigger
+        className={cn(triggerVariants({ state: openItem ? "open" : "closed" }))}
         aria-label={`Toggle ${sectionTitle}`}
       >
         <span className="text-foreground text-sm font-medium">
@@ -68,19 +58,16 @@ function CollapsibleSection({
         </span>
         <span
           className={cn(
-            iconButtonVariants({ state: open ? "open" : "closed" }),
+            iconButtonVariants({ state: openItem ? "open" : "closed" }),
           )}
         >
-          {open ? <ChevronUp size={16} /> : <ChevronRight size={16} />}
+          {openItem ? <ChevronUp size={16} /> : <ChevronRight size={16} />}
         </span>
-      </Collapsible.Trigger>
-      <Collapsible.Content
-        className={cn("px-4 pt-2 pb-4", contentProps?.className)}
-        {...contentProps}
-      >
+      </AccordionTrigger>
+      <AccordionContent className={cn("px-4 pt-2 pb-4")}>
         {children}
-      </Collapsible.Content>
-    </Collapsible.Root>
+      </AccordionContent>
+    </AccordionItem>
   );
 }
 

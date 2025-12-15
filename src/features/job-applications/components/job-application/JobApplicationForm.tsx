@@ -2,18 +2,13 @@ import { memo, useEffect, useRef } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { Button } from "~/components/ui/button";
+import type { JobApplicationFormProps } from "~/features/job-applications/types/job-application-form";
 import { type JobApplicationInput } from "~/schemas/jobApplication.schema";
 
 import { JobApplicationSections } from "./JobApplicationSections";
 
 export const JobApplicationForm = memo(
-  ({
-    onSubmit,
-    isSubmitting,
-  }: {
-    onSubmit: (data: JobApplicationInput) => Promise<void>;
-    isSubmitting: boolean;
-  }) => {
+  ({ onSubmit, isSubmitting }: JobApplicationFormProps) => {
     const { handleSubmit } = useFormContext<JobApplicationInput>();
 
     const formRef = useRef<HTMLFormElement>(null);

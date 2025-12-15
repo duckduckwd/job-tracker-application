@@ -1,7 +1,11 @@
-import { memo } from "react";
+import { Accordion } from "@radix-ui/react-accordion";
+import { memo, useState } from "react";
 
 import { CollapsibleSection } from "~/components/ui/collapsible-section";
-import { sectionTitles } from "~/config/forms/form-sections.config";
+import {
+  sectionLegends,
+  sectionTitles,
+} from "~/config/forms/form-sections.config";
 import {
   contactFields,
   jobDetailsFields,
@@ -10,27 +14,46 @@ import {
 
 import { FormSectionWrapper } from "./FormSectionWrapper";
 
-export const JobApplicationSections = memo(() => (
-  <>
-    <CollapsibleSection
-      sectionTitle={sectionTitles.role}
-      rootProps={{ defaultOpen: true }}
+export const JobApplicationSections = memo(() => {
+  const [openItem, setOpenItem] = useState<string>(sectionTitles.role);
+
+  return (
+    <Accordion
+      type="single"
+      collapsible
+      className="border-border rounded-md border bg-white/5"
+      onValueChange={setOpenItem}
+      defaultValue={openItem}
     >
-      <FormSectionWrapper legend="Role Details" fields={jobDetailsFields} />
-    </CollapsibleSection>
-    <CollapsibleSection sectionTitle={sectionTitles.timeline}>
-      <FormSectionWrapper
-        legend="Application Timeline"
-        fields={timelineFields}
-      />
-    </CollapsibleSection>
-    <CollapsibleSection sectionTitle={sectionTitles.contact}>
-      <FormSectionWrapper
-        legend="Application Contacts"
-        fields={contactFields}
-      />
-    </CollapsibleSection>
-  </>
-));
+      <CollapsibleSection
+        sectionTitle={sectionTitles.role}
+        openItem={openItem === sectionTitles.role}
+      >
+        <FormSectionWrapper
+          legend={sectionLegends.role}
+          fields={jobDetailsFields}
+        />
+      </CollapsibleSection>
+      <CollapsibleSection
+        sectionTitle={sectionTitles.timeline}
+        openItem={openItem === sectionTitles.timeline}
+      >
+        <FormSectionWrapper
+          legend={sectionLegends.timeline}
+          fields={timelineFields}
+        />
+      </CollapsibleSection>
+      <CollapsibleSection
+        sectionTitle={sectionTitles.contact}
+        openItem={openItem === sectionTitles.contact}
+      >
+        <FormSectionWrapper
+          legend={sectionLegends.contact}
+          fields={contactFields}
+        />
+      </CollapsibleSection>
+    </Accordion>
+  );
+});
 
 JobApplicationSections.displayName = "JobApplicationSections";

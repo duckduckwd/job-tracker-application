@@ -9,3 +9,8 @@ export interface UseJobApplicationFormReturn {
   submitError: string | null;
   clearError: () => void;
 }
+
+export interface JobApplicationFormProps {
+  onSubmit: (data: JobApplicationInput) => Promise<void>;
+  isSubmitting: boolean;
+}
